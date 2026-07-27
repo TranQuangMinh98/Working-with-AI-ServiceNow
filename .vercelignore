@@ -1,0 +1,11 @@
+# Local tooling / editor state — never deploy
+.claude
+.git
+.gitignore
+
+# /teach workspace files — internal course-authoring material, not part of the site
+MISSION.md
+NOTES.md
+RESOURCES.md
+learning-records
+specs
