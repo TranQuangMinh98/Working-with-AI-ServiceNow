@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 15: Choosing the Model Provider & BYOK Setup</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 15: Choosing the Model Provider (per Skill) &amp; Setting Up BYOK</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 20 minutes | <strong>Level:</strong> Intermediate | <strong>Prerequisites:</strong> Lesson 14
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Answer a very common real-world question: <em>"Can I make one specific AI agent use Claude or GPT instead of the default model?"</em> You'll learn what's possible today, the supported workaround, and how to set up a <strong>BYOK / BYOLLM</strong> (bring-your-own-model) provider.</p>
+  </div>
+
+  <h2>The Question Everyone Asks</h2>
+  <p>Say you build an agent that asks a user for some details and then <strong>generates a test suite</strong>. You'd rather that generation run on <strong>Claude</strong> or <strong>GPT</strong> than on the default model — but only for <em>this</em> agent. Can you do it?</p>
+
+  <div class="key-concept">
+    <strong>Short answer:</strong> You <em>cannot</em> (yet) pick a model for one agent's <strong>orchestration</strong>. But you <em>can</em> pick the model one layer down — at the <strong>Skill</strong> level — and that's usually exactly what you want.
+  </div>
+
+  <h2>Where the Model Actually Gets Chosen</h2>
+  <p>Recall the nesting model from earlier: <strong>Tools → Agents → Agentic Workflows</strong>. The important insight for this lesson is that an <strong>LLM is selected at more than one layer</strong>:</p>
+
+  <div class="diagram" style="flex-direction:column; align-items:flex-start; gap:0.4rem;">
+    <div><strong>Agentic Workflow</strong></div>
+    <div>&nbsp;&nbsp;└─ <strong>AI Agent</strong> — orchestration LLM = <span style="color:var(--danger-color);">instance default (no per-agent override yet)</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ <strong>Tool</strong></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ <strong>Now Assist Skill</strong> — this skill's LLM = <span style="color:var(--success-color);">configurable per skill ✓</span></div>
+  </div>
+
+  <p>The model running the agent's <strong>reasoning loop</strong> (Thought → Action → Observation) is set at the <strong>instance</strong> level. A ServiceNow product team member confirmed this directly:</p>
+
+  <blockquote class="note">
+    "We currently do not have granularity to choose specific models against specific AI agents' orchestration … [but] you can have Now Assist Skills that run in different models — the granularity is available today at the tooling level."
+  </blockquote>
+
+  <h2>The Workaround: Put the Work in a Skill</h2>
+  <p>Don't make the <em>agent</em> generate the test suite in its own head. Make a <strong>Skill</strong> do it, pin that skill to Claude/GPT, and expose the skill to the agent as a tool. The agent still orchestrates on the default model, but the heavy generation runs on your chosen model — for that flow only.</p>
+
+  <ol>
+    <li><strong>Build a custom skill</strong> in the Now Assist Skill Kit — e.g. "Generate Test Suite" (this is the Lesson 14 workflow).</li>
+    <li><strong>Assign that skill to your chosen model provider.</strong> In the <strong>Now Assist Admin console → Manage model providers</strong>, the provider can be set at three levels: <strong>instance</strong>, <strong>skill group</strong>, or <strong>individual skill</strong>. Pick <em>individual skill</em> and choose, say, Claude.</li>
+    <li><strong>Expose the skill to your agent</strong> as a "Now Assist skill" tool.</li>
+    <li>The agent gathers the user's input (orchestration = default model), then <strong>calls the skill</strong> (= your chosen model) to write the suite.</li>
+  </ol>
+
+  <div class="success">
+    <strong>Net effect:</strong> test-suite generation runs on Claude/GPT exactly where you wanted — you just route it through a skill instead of the agent's own reasoning.
+  </div>
+
+  <h2>Setting Up a BYOK / BYOLLM Provider</h2>
+  <p><strong>BYOK</strong> (bring-your-own-key) / <strong>BYOLLM</strong> (bring-your-own-LLM) lets your instance call an <em>approved</em> external model using your own provider subscription. It's enabled through the <strong>Generative AI Controller</strong>. Supported providers include:</p>
+
+  <ul>
+    <li><strong>OpenAI</strong> — GPT-4.1 and GPT-4.1-mini (via Azure OpenAI)</li>
+    <li><strong>Anthropic</strong> — Claude (e.g. Claude Sonnet, via Amazon Bedrock)</li>
+    <li><strong>Google</strong> — Gemini 2.5 Flash / Pro</li>
+  </ul>
+
+  <p>High-level setup (exact screens vary by release — verify on your instance):</p>
+  <ol>
+    <li>Install the <strong>Generative AI Controller</strong> plugin, plus the relevant <strong>provider spoke</strong> (e.g. the <strong>Amazon Bedrock</strong> spoke for Claude).</li>
+    <li>Obtain <strong>credentials / a subscription with that provider</strong> (BYOLLM = you bring and pay for your own model access; it's separate from your Now Assist entitlement).</li>
+    <li><strong>Configure the provider connection</strong> (endpoint + credentials) via the spoke.</li>
+    <li>In the <strong>Now Assist Admin console → Manage model providers</strong>, register the provider and <strong>assign it</strong> at the instance, skill-group, or individual-skill level.</li>
+    <li>Review the <strong>model policies / guardrails</strong>, then <strong>test</strong> the skill against the new provider.</li>
+  </ol>
+
+  <div class="warning">
+    <strong>⚠ Requirements &amp; caveats:</strong>
+    <ul>
+      <li>You need <strong>admin rights</strong> in the Now Assist Admin console.</li>
+      <li>BYOLLM incurs <strong>separate subscription charges</strong> with the third-party provider.</li>
+      <li>Consider <strong>data-residency and privacy</strong> — you're sending prompts to an external model.</li>
+      <li>Not available on <strong>PDIs</strong> — you need an entitled enterprise instance.</li>
+    </ul>
+  </div>
+
+  <div class="warning">
+    <strong>⚠ Version-dependent — check your own release.</strong> This area moves fast. ServiceNow announced that from <strong>July 9, 2026</strong>, third-party model providers begin becoming the <em>default</em> for out-of-the-box skills and agents — so "the default model" itself is shifting. And per-agent orchestration selection "may be introduced later," so if you're on a newer release, re-check whether native per-agent model choice has shipped.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz20" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resources</h2>
+  <a href="https://www.servicenow.com/docs/r/api-reference/scripts/configure-model-providers-for-now-assist-skills.html" class="resource-link" target="_blank">📚 ServiceNow Docs — Configure AI model providers</a>
+  <a href="https://www.servicenow.com/community/now-assist-articles/using-external-llms-with-now-assist-including-byok-byollm/ta-p/3218103" class="resource-link" target="_blank">📚 Using external LLMs with Now Assist (BYOK / BYOLLM)</a>
+  <a href="https://www.servicenow.com/community/now-assist-forum/which-llm-ai-agents-use-can-we-configure-each-ai-agent-to-use/m-p/3563431" class="resource-link" target="_blank">📚 Forum — Can we configure each AI agent's model?</a>
+
+  <div class="teacher-note">
+    <strong>💡 Remember:</strong> if per-agent orchestration model selection matters a lot for your use case, tell me which release you're on and I'll help you check whether it's shipped — this is one of the fastest-changing corners of the platform.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "Can you currently choose a specific model for one AI agent's orchestration?",
+        options: [
+          "Yes, each agent has its own model dropdown in the agent record today",
+          "No, orchestration model is set at instance level, not per single agent",
+          "Yes, but only after you export the agent into a separate update set first",
+          "No, because every agent is permanently locked to the Now LLM Service only"
+        ],
+        correct: 1,
+        explanation: "The orchestration LLM (the agent's reasoning loop) is set at the instance level. There's no per-agent override yet — though ServiceNow has said it may come later."
+      },
+      {
+        question: "What is the supported way to run generation on Claude or GPT for one flow?",
+        options: [
+          "Rewrite the agent's instructions to name the external model in plain text",
+          "Route the work through a Skill and pin that skill to the chosen provider",
+          "Attach the API key to the agent record so the orchestrator switches models",
+          "Nothing works today; you must wait for a future release before it is possible"
+        ],
+        correct: 1,
+        explanation: "Model choice is configurable at the skill (tooling) level. Build a skill, assign it to Claude/GPT, and expose it to the agent as a tool. The agent orchestrates on the default; the skill runs on your model."
+      },
+      {
+        question: "At which levels can a model provider be assigned in the Admin console?",
+        options: [
+          "Only at the single instance level, applied uniformly to every skill",
+          "Instance, skill group, or individual skill — three levels of granularity",
+          "Only per individual agent, chosen directly on each agent's own record",
+          "Only per user session, reset automatically every time the user logs out"
+        ],
+        correct: 1,
+        explanation: "In the Now Assist Admin console → Manage model providers, you can set the provider at the instance, skill-group, or individual-skill level."
+      },
+      {
+        question: "Which statement about BYOK / BYOLLM setup is correct?",
+        options: [
+          "It works on any PDI instantly and needs no extra plugin or subscription",
+          "It uses the Generative AI Controller and your own provider subscription",
+          "It lets you paste any arbitrary model URL with no approved-provider limits",
+          "It is entirely free because it is bundled inside the Now Assist entitlement"
+        ],
+        correct: 1,
+        explanation: "BYOK/BYOLLM runs through the Generative AI Controller (plus a provider spoke like Amazon Bedrock) against an approved provider, using your own subscription — which carries separate charges and isn't available on PDIs."
+      }
+    ];
+    initQuiz('quiz20', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0020";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

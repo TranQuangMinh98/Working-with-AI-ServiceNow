@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 4: Prerequisites, Plugins & Licensing</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 4: Prerequisites, Plugins &amp; Licensing</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Unit 1
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Know exactly what your instance needs before you can build AI agents: the right <strong>release</strong>, <strong>license</strong>, <strong>plugins</strong>, and platform features.</p>
+  </div>
+
+  <div class="warning">
+    <strong>⚠ Always verify against your release notes.</strong> Plugin names, patch requirements, and entitlements evolve every release. The items below are verified as of the Yokohama/Zurich era (2025) — confirm the specifics for <em>your</em> instance's version before you begin.
+  </div>
+
+  <h2>1. Release Version</h2>
+  <p>AI Agents became natively available in <strong>Yokohama</strong> (early 2025) and were deepened in <strong>Zurich</strong> (late 2025). A commonly cited baseline is <strong>Zurich Patch 2+ or Yokohama Patch 8+</strong> (latest patch recommended). The Now Assist Skill Kit (NASK) shipped earlier, in <strong>Xanadu</strong>.</p>
+
+  <h2>2. Licensing / Entitlement</h2>
+  <p>AI Agents require an active <strong>Now Assist license</strong>. This is a paid entitlement layered on the relevant product (ITSM, CSM, HRSD, etc.).</p>
+  <div class="warning">
+    <strong>⚠ Not on PDIs:</strong> The Now Assist Skill Kit is <strong>not available on Personal Developer Instances</strong>. Full agent building needs an enterprise instance with Now Assist entitlements.
+  </div>
+
+  <h2>3. Plugins &amp; Apps to Install</h2>
+  <p>From the ServiceNow Store, you'll typically need:</p>
+  <ul>
+    <li><strong>Now Assist AI Agents</strong> — the core AI Agents capability</li>
+    <li><strong>Now Assist for [product]</strong> — e.g. Now Assist for ITSM / HRSD / CSM</li>
+    <li><strong>Now Assist Skill Kit</strong> — to build custom skills (Unit 5)</li>
+    <li>Their <strong>dependencies</strong>, installed automatically with them</li>
+  </ul>
+
+  <h2>4. Platform Features to Enable</h2>
+  <ul>
+    <li><strong>AI Search</strong> — enabled (required for retrieval/RAG tools and agent grounding)</li>
+    <li><strong>Now Assist Panel</strong> (a.k.a. <strong>Otto Panel</strong> in Zurich) — enabled, so users can reach agents</li>
+  </ul>
+
+  <h2>The Pre-Flight Checklist</h2>
+  <div class="note">
+    <ol style="margin-top:0.25rem;">
+      <li>☐ Instance on a supported release + patch (verify in release notes)</li>
+      <li>☐ Active Now Assist license for your product</li>
+      <li>☐ "Now Assist AI Agents" installed (+ product Now Assist app)</li>
+      <li>☐ Now Assist Skill Kit installed (for custom skills)</li>
+      <li>☐ AI Search enabled</li>
+      <li>☐ Now Assist / Otto Panel enabled</li>
+      <li>☐ Admin roles assigned (next lesson)</li>
+    </ol>
+  </div>
+
+  <div class="key-concept">
+    <strong>Mental model:</strong> Think of it as three layers stacking up — <em>License</em> (permission to use Now Assist) → <em>Plugins</em> (the AI Agents + Skill Kit software) → <em>Platform features</em> (AI Search + the panel that surfaces agents). All three must be in place.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz4" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/now-assist-articles/introducing-ai-agents-unlock-autonomous-productivity-at-scale/ta-p/3200447" class="resource-link" target="_blank">📚 Introducing AI Agents — Quick Start Guide</a>
+
+  <div class="teacher-note">
+    <strong>💡 Unsure what your instance has?</strong> Tell me your release version and licensed products, and I'll help you figure out what's missing.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "In which release did AI Agents become natively available?",
+        options: [
+          "Xanadu, which is also when the Skill Kit first shipped to all",
+          "Yokohama (early 2025), with capabilities deepened later in Zurich",
+          "Zurich only; no earlier release supported AI Agents in any form",
+          "They have existed unchanged since the very first platform release"
+        ],
+        correct: 1,
+        explanation: "AI Agents became natively available in Yokohama (early 2025) and were deepened in Zurich (late 2025). NASK shipped earlier, in Xanadu."
+      },
+      {
+        question: "What licensing is required to use AI Agents?",
+        options: [
+          "No license; AI Agents are free with every ServiceNow instance",
+          "An active Now Assist license layered on the relevant product",
+          "Only the base platform license with no additional entitlement",
+          "A separate one-time purchase unrelated to any Now Assist offering"
+        ],
+        correct: 1,
+        explanation: "AI Agents require an active Now Assist license — a paid entitlement layered on the relevant product (ITSM, CSM, HRSD, etc.)."
+      },
+      {
+        question: "Why can't you fully build agents and skills on a PDI?",
+        options: [
+          "PDIs run an older release that predates all AI functionality",
+          "The Now Assist Skill Kit is not available on PDIs at all",
+          "PDIs cannot install any plugins from the ServiceNow Store",
+          "PDIs lack the storage capacity to hold the AI Agent tables"
+        ],
+        correct: 1,
+        explanation: "The Now Assist Skill Kit is not available on Personal Developer Instances. Full agent/skill building needs an enterprise instance with Now Assist entitlements."
+      },
+      {
+        question: "Which platform feature must be enabled for retrieval/RAG grounding?",
+        options: [
+          "AI Search, which powers retrieval and agent grounding tools",
+          "The Kill Switch, which must be armed before any agent runs",
+          "Flow Designer debug mode, required for all tool executions",
+          "Role masking, without which no lookup tool can return data"
+        ],
+        correct: 0,
+        explanation: "AI Search must be enabled — it powers retrieval (RAG) tools and grounding. The Now Assist/Otto Panel must also be enabled so users can reach agents."
+      }
+    ];
+    initQuiz('quiz4', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0004";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

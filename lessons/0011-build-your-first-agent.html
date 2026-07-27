@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 11: Build Your First Agent (Hands-On)</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 11: Build Your First Agent (Hands-On)</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 25 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Lessons 9 &amp; 10
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Build a working agent end-to-end in AI Agent Studio, following the official step sequence. This is your first tangible agent — start simple, test, then grow it.</p>
+  </div>
+
+  <div class="note">
+    <strong>Follow along:</strong> If you have an entitled instance, do each step live. No instance? Read through and use the "dry-run" prompts — you'll still learn the flow, and can build later.
+  </div>
+
+  <h2>Our Goal: A "My Open Incidents" Agent</h2>
+  <p>A simple agent that, when a user asks, looks up and summarizes their own open incidents. One capability, one tool — the ideal first build.</p>
+
+  <h2>Step-by-Step Build</h2>
+  <p>The official sequence <a href="https://www.servicenow.com/docs/r/intelligent-experiences/configuring-ai-agents.html" target="_blank">(ServiceNow docs)</a>:</p>
+
+  <h3>Step 1 — Open the Studio</h3>
+  <p>Navigate to <strong>All &gt; AI Agent Studio &gt; Create and manage &gt; AI agents</strong>, then click <strong>New</strong>. (You need the <code>sn_aia.admin</code> role.)</p>
+
+  <h3>Step 2 — Define the specialty (identity fields)</h3>
+  <p>Fill in the three identity fields from Lesson 9:</p>
+  <pre><code>name:        My Open Incidents Assistant
+description: Helps a user see and understand their
+             own currently open incidents.
+agentRole:   You are a helpful IT service assistant
+             that reports on a user's open incidents.
+instructions: When the user asks about their tickets,
+              use the lookup tool to find active
+              incidents where they are the caller.
+              Summarize each as: number, short
+              description, and priority. If none,
+              say so clearly.</code></pre>
+
+  <div class="success">
+    <strong>Test bare FIRST.</strong> Before adding any tool, open the test panel and chat with the agent. Confirm it understands its job and asks sensible questions. This is the golden method from Lesson 15.
+  </div>
+
+  <h3>Step 3 — Add one tool</h3>
+  <p>Add a <strong>Record operation (Lookup)</strong> tool:</p>
+  <ul>
+    <li>Table: <code>incident</code></li>
+    <li>Condition: <code>Active = true</code> AND <code>Caller = {{user}}</code></li>
+    <li>Description: <em>"Looks up the current user's active incidents. Use when they ask about their open tickets."</em></li>
+    <li>Execution mode: <strong>Autonomous</strong> (it's a safe read)</li>
+  </ul>
+  <p>Then re-test. Confirm the agent calls the tool and summarizes results.</p>
+
+  <h3>Step 4 — Define security controls</h3>
+  <p>Set the ACL / run-as identity so the agent only sees what the requesting user is allowed to see. Least privilege always.</p>
+
+  <h3>Step 5 — Add a trigger (optional)</h3>
+  <p>For a chat-driven agent, you can skip a trigger entirely and let users invoke it on-demand from the Otto Panel. If you add one, remember it deploys <strong>inactive</strong>.</p>
+
+  <h3>Step 6 — Select channels &amp; status</h3>
+  <p>Choose a channel (e.g., Virtual Agent or the Otto Panel) and set the agent active.</p>
+
+  <div class="key-concept">
+    <strong>You just built an agent!</strong> Notice the pattern: identity → test → one tool → test → secure → deploy. Every agent you ever build follows this same rhythm. Master it here.
+  </div>
+
+  <div class="warning">
+    <strong>⚠ AI-assisted creation:</strong> Studio can generate a first draft of an agent from a natural-language prompt. Great for a head start — but always <em>review and refine</em> the generated fields. Treat it as a draft, not a finished agent.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz11" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/ceg-ai-coe-articles/how-to-build-a-simple-ai-agent/ta-p/3571607" class="resource-link" target="_blank">📚 How to Build a Simple AI Agent</a>
+
+  <div class="teacher-note">
+    <strong>💡 Built it?</strong> Tell me what happened when you tested it — including anything surprising — and we'll refine it together.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What should you do BEFORE adding any tool to a new agent?",
+        options: [
+          "Add the trigger and activate it so testing reflects production",
+          "Test the bare agent to confirm its basic reasoning is sound",
+          "Attach all planned tools at once to save configuration time",
+          "Deploy it to a channel so real users can start giving feedback"
+        ],
+        correct: 1,
+        explanation: "Test bare first — confirm the agent understands its job with no tools. Then add tools one at a time, re-testing each. This isolates any problem you introduce."
+      },
+      {
+        question: "For a read-only 'look up my incidents' tool, which mode fits?",
+        options: [
+          "Supervised, so the user must approve every harmless lookup first",
+          "Autonomous, because a read/lookup is safe to run without approval",
+          "Neither, because lookups cannot be exposed as agent tools at all",
+          "It must alternate modes depending on how many records are found"
+        ],
+        correct: 1,
+        explanation: "Reads/lookups are safe, so Autonomous is appropriate — no need to interrupt the user for approval. Reserve Supervised for write operations."
+      },
+      {
+        question: "What is the repeatable rhythm for building any agent?",
+        options: [
+          "Deploy, trigger, test, secure, then finally write the identity",
+          "Identity, test bare, add one tool, test, secure, then deploy",
+          "Add all tools, secure, deploy, and only test once in production",
+          "Trigger, channel, identity, tools, with no testing in between"
+        ],
+        correct: 1,
+        explanation: "The rhythm is: define identity → test bare → add one tool → test → secure → deploy. Every agent follows this same pattern."
+      },
+      {
+        question: "The Studio generated an agent draft from your prompt. What next?",
+        options: [
+          "Deploy it immediately since AI-generated agents are always correct",
+          "Review and refine the generated fields; treat it as a draft only",
+          "Delete it and rewrite everything by hand to avoid any AI influence",
+          "Add ten tools right away so it has enough capability to be useful"
+        ],
+        correct: 1,
+        explanation: "AI-assisted creation gives a helpful starting draft, but you must review and refine the fields. It's a head start, not a finished, trustworthy agent."
+      }
+    ];
+    initQuiz('quiz11', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0011";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

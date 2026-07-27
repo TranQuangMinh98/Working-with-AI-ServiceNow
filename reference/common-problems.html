@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reference: Common Problems & Fixes — ServiceNow AI Agents</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+  <style>
+    .problem {
+      border: 1px solid var(--border-color); border-left: 4px solid #B71C1C;
+      border-radius: 6px; padding: 1rem 1.15rem; margin: 1.1rem 0; background: #fff;
+    }
+    .problem h3 { margin: 0 0 0.5rem; color: #B71C1C; font-size: 1.12rem; }
+    .problem .row { margin: 0.35rem 0; }
+    .problem .label {
+      display: inline-block; min-width: 5.5rem; font-weight: 700; font-size: 0.78rem;
+      text-transform: uppercase; letter-spacing: 0.03em; color: var(--primary-color);
+      vertical-align: top;
+    }
+    .problem .fix { background: #E6F4EA; border-radius: 4px; padding: 0.6rem 0.7rem; margin-top: 0.5rem; }
+    .problem .fix .label { color: #1E7E34; }
+    .sev { float: right; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      padding: 0.12rem 0.5rem; border-radius: 10px; }
+    .sev-common { background: #FDE2E2; color: #B71C1C; }
+    .sev-setup { background: #FFF3CD; color: #856404; }
+    .cat-nav { position: sticky; top: 0; background: #fff; padding: 0.6rem 0;
+      border-bottom: 2px solid var(--primary-color); margin-bottom: 1rem; z-index: 5; }
+    .cat-nav a { display: inline-block; padding: 0.2rem 0.55rem; font-weight: 600; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Common Problems &amp; Fixes</h1>
+  <div class="lesson-meta">
+    <strong>Reference Document</strong> · The issues most learners hit while implementing this course — with the cause and the fix for each. Grounded in ServiceNow's official troubleshooting guidance.
+  </div>
+
+  <div class="note">
+    <strong>How to use this page:</strong> When something "just isn't working," scan the category jump-links, find the symptom that matches yours, and apply the fix. Each entry names the exact role, property, or plugin involved. Pairs with the <a href="plugins.html">Plugins &amp; Apps</a> reference.
+  </div>
+
+  <div class="cat-nav">
+    Jump to:
+    <a href="#setup">Setup &amp; Access</a> ·
+    <a href="#running">Agent Won't Run</a> ·
+    <a href="#model">Model Provider</a> ·
+    <a href="#forms">Forms &amp; UI Actions</a> ·
+    <a href="#behavior">Behavior &amp; Quality</a>
+  </div>
+
+  <h2 id="setup">Setup &amp; Access</h2>
+
+  <div class="problem">
+    <h3>"Security constraints prevent access to requested page" <span class="sev sev-setup">After upgrade</span></h3>
+    <div class="row"><span class="label">Symptom</span> AI Agent Studio or Now Assist Skill Kit throws this error right after you updated the Now Assist AI Agents store app.</div>
+    <div class="row"><span class="label">Cause</span> The <strong>Now Assist Admin Console</strong> store app wasn't updated to a compatible version alongside it.</div>
+    <div class="fix"><span class="label">Fix</span> Update the Now Assist Admin Console store app to <strong>v6.6.4 or later</strong>, then reload Studio.</div>
+  </div>
+
+  <div class="problem">
+    <h3>Can't access AI Agent Studio at all <span class="sev sev-setup">Setup</span></h3>
+    <div class="row"><span class="label">Symptom</span> The Studio menu is missing, or opening it is blocked.</div>
+    <div class="row"><span class="label">Cause</span> Missing role, missing entitlement, or an out-of-date Gen AI Controller.</div>
+    <div class="fix"><span class="label">Fix</span> Confirm you hold the <code>sn_aia.admin</code> role; verify your instance has a <strong>Pro Plus / Enterprise Plus</strong> Now Assist SKU; repair the plugin; and check the <strong>Generative AI Controller</strong> version. (Lesson 6)</div>
+  </div>
+
+  <div class="problem">
+    <h3>Can't build on a Personal Developer Instance (PDI) <span class="sev sev-common">Very common</span></h3>
+    <div class="row"><span class="label">Symptom</span> You want to practice on a free PDI, but Skill Kit / full agent building isn't there.</div>
+    <div class="row"><span class="label">Cause</span> AI Agents and the Now Assist Skill Kit are <strong>not available on PDIs</strong> — they need an enterprise instance with Now Assist entitlements.</div>
+    <div class="fix"><span class="label">Fix</span> Use an enterprise/customer instance with the right SKU. On a PDI you can still learn the concepts, but you can't fully build. (Lesson 4)</div>
+  </div>
+
+  <div class="problem">
+    <h3>Agents stop responding after a patch or upgrade <span class="sev sev-common">Very common</span></h3>
+    <div class="row"><span class="label">Symptom</span> After a patch, agents don't respond, skills aren't discovered, or Studio throws errors.</div>
+    <div class="row"><span class="label">Cause</span> You updated individual <em>child</em> plugins instead of the <em>parent</em>, leaving the dependency chain inconsistent.</div>
+    <div class="fix"><span class="label">Fix</span> Always update the <strong>parent</strong> plugin (e.g. "Now Assist for ITSM") so updates cascade to its dependents. Re-check for updates after every patch.</div>
+  </div>
+
+  <h2 id="running">Agent Won't Run / Isn't Found</h2>
+
+  <div class="problem">
+    <h3>"No agents are available at the moment" <span class="sev sev-common">Very common</span></h3>
+    <div class="row"><span class="label">Symptom</span> The panel says no agents are available even though you built one.</div>
+    <div class="row"><span class="label">Cause</span> Usually agent <strong>proficiency / description not filled in</strong> or too vague; also AI Search not enabled, orchestrator token count exceeded, or the agent/tools aren't Active.</div>
+    <div class="fix"><span class="label">Fix</span> Write a clear, specific name + description; enable <strong>AI Search</strong>; confirm the agent <em>and</em> every tool/skill it uses are <strong>Active</strong>. (Lessons 10, 12)</div>
+  </div>
+
+  <div class="problem">
+    <h3>Prebuilt agent hangs at "Task Start" <span class="sev sev-setup">Setup</span></h3>
+    <div class="row"><span class="label">Symptom</span> Testing a pre-built agent hangs at "Task Start", often a 500 error in the console. Reinstalling doesn't help.</div>
+    <div class="row"><span class="label">Cause</span> The underlying <strong>assistant is inactive</strong> — not flagged as a prerequisite in the docs.</div>
+    <div class="fix"><span class="label">Fix</span> Go to <strong>Conversational Interfaces &gt; Assistant Designer &gt; Assistants</strong>, activate the assistant tied to your setup, then retest.</div>
+  </div>
+
+  <div class="problem">
+    <h3>Trigger built, but the workflow never fires <span class="sev sev-common">Very common</span></h3>
+    <div class="row"><span class="label">Symptom</span> You added a record/schedule trigger, but nothing happens when the event occurs.</div>
+    <div class="row"><span class="label">Cause</span> <strong>Triggers deploy inactive.</strong> They must be manually activated after testing.</div>
+    <div class="fix"><span class="label">Fix</span> Open the trigger and <strong>activate it</strong> once testing is done. (Lessons 3, 18 — see the Glossary entry for "Trigger".)</div>
+  </div>
+
+  <div class="problem">
+    <h3>Agent task doesn't execute for some users <span class="sev sev-setup">Access</span></h3>
+    <div class="row"><span class="label">Symptom</span> A workflow runs for you (admin) but not for real users.</div>
+    <div class="row"><span class="label">Cause</span> The workflow/agent is acting on a record the <strong>user doesn't have access to</strong> (ACLs / domain / scope).</div>
+    <div class="fix"><span class="label">Fix</span> Test as the target user, check ACLs and the <code>securityAcl</code> on the agent, and rule out domain-separation / scope issues. Read the AI decision logs.</div>
+  </div>
+
+  <div class="problem">
+    <h3>Agent stops re-using a tool mid-run <span class="sev sev-setup">Config</span></h3>
+    <div class="row"><span class="label">Symptom</span> The agent calls a tool a few times, then refuses to call it again.</div>
+    <div class="row"><span class="label">Cause</span> The continuous-execution guardrail was hit.</div>
+    <div class="fix"><span class="label">Fix</span> Check the <code>sn_aia.continuous_tool_execution_limit</code> property — it caps uninterrupted repeat calls to the same tool.</div>
+  </div>
+
+  <h2 id="model">Model Provider</h2>
+
+  <div class="problem">
+    <h3>Your provider isn't in the list / agent fails silently after save <span class="sev sev-common">Common</span></h3>
+    <div class="row"><span class="label">Symptom</span> The model provider you want (Claude, GPT, Gemini) doesn't appear during configuration, or the agent fails silently once saved.</div>
+    <div class="row"><span class="label">Cause</span> Some skills and agentic workflows have <strong>provider restrictions</strong> not shown in the UI. Supported set: Now LLM, Azure OpenAI, Google Gemini, Anthropic Claude (AWS).</div>
+    <div class="fix"><span class="label">Fix</span> Check the <strong>model provider support matrix</strong> for your specific skill type, release, and market before configuring. (Lesson 15)</div>
+  </div>
+
+  <div class="problem">
+    <h3>LLM provider setting reverts hours after an upgrade <span class="sev sev-common">Common</span></h3>
+    <div class="row"><span class="label">Symptom</span> You set a preferred provider; within hours it silently reverts, often unnoticed until an agent fails.</div>
+    <div class="row"><span class="label">Cause</span> The instance was upgraded without updating the <strong>Generative AI Controller</strong> and <strong>Now Assist Admin</strong> apps; older versions reset the config.</div>
+    <div class="fix"><span class="label">Fix</span> Update both store apps to the latest compatible versions <em>before</em> configuring. On Zurich Patch 6 or earlier, move to <strong>Patch 7+</strong> for a permanent fix.</div>
+  </div>
+
+  <h2 id="forms">Forms &amp; UI Actions</h2>
+
+  <div class="problem">
+    <h3>UI action added as a "channel" doesn't show on the form <span class="sev sev-common">Very common</span></h3>
+    <div class="row"><span class="label">Symptom</span> You added a UI action in the workflow's channel section, but no button appears on the Incident form.</div>
+    <div class="row"><span class="label">Cause</span> Listing a UI action as a channel <strong>does not create or bind a button</strong>. The button is a separate <code>sys_ui_action</code> record that must independently qualify to render, and a system property gates agentic-workflow actions.</div>
+    <div class="fix"><span class="label">Fix</span> Enable the property <code>com.glide.agentic_processes_view.enabled = true</code> (create it if missing), then reopen the record. Also confirm the UI action is <strong>Active</strong>, on the right <strong>table</strong>, has a <strong>Form button/link</strong> checkbox on, and its <strong>condition</strong> passes for you. Check classic vs. Workspace — they surface actions differently. To actually <em>trigger</em> the workflow, the UI action needs a server-side script that calls it.</div>
+  </div>
+
+  <div class="problem">
+    <h3>UI action shows in classic UI but not in Workspace (SOW) <span class="sev sev-setup">Common</span></h3>
+    <div class="row"><span class="label">Symptom</span> The button appears on the classic form but is missing in Service Operations Workspace.</div>
+    <div class="row"><span class="label">Cause</span> Workspace only renders UI actions explicitly enabled for it, and only supports form buttons + menu items.</div>
+    <div class="fix"><span class="label">Fix</span> Enable the UI action for Workspace (declarative action / "Workspace form button"), and ensure an action bar is present on the Workspace form.</div>
+  </div>
+
+  <h2 id="behavior">Behavior &amp; Quality</h2>
+
+  <div class="problem">
+    <h3>Same prompt gives different results <span class="sev sev-setup">Expected</span></h3>
+    <div class="row"><span class="label">Symptom</span> Identical inputs produce different agent behavior run to run.</div>
+    <div class="row"><span class="label">Cause</span> Not a bug — AI Agents and generative AI are <strong>non-deterministic</strong> systems.</div>
+    <div class="fix"><span class="label">Fix</span> Tighten instructions, add guardrails/approval gates, and test across many runs rather than expecting one fixed answer. (Lessons 10, 15)</div>
+  </div>
+
+  <div class="problem">
+    <h3>Orchestrator "token count exceeded" / slow, expensive runs <span class="sev sev-setup">Performance</span></h3>
+    <div class="row"><span class="label">Symptom</span> Runs fail on token limits or feel slow on data-heavy tasks.</div>
+    <div class="row"><span class="label">Cause</span> Too many tools per workflow, or heavy data analysis done through raw LLM calls.</div>
+    <div class="fix"><span class="label">Fix</span> Keep to <strong>≤ 15 tools/agents per use case</strong>; for data-heavy analysis, build a <strong>Skill</strong> (NASK) to limit LLM calls. (Lessons 14, 17)</div>
+  </div>
+
+  <div class="problem">
+    <h3>Now Assist Panel times out after 2 hours <span class="sev sev-setup">Config</span></h3>
+    <div class="row"><span class="label">Symptom</span> The panel conversation goes dead after a couple of hours.</div>
+    <div class="row"><span class="label">Cause</span> Idle-timeout settings.</div>
+    <div class="fix"><span class="label">Fix</span> Adjust <strong>Conversation Idle Timeout</strong> on the Now Assist Panel (<code>sys_cs_channel</code>) record and the <code>com.glide.cs.conversation_idle_timeout</code> property.</div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>💡 Hit something not listed here?</strong> Describe the symptom, your release version, and whether you're in classic or Workspace — I'll help you diagnose it and, if it's a recurring one, we'll add it to this page.
+  </div>
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>
+    const NAV_SECTION = "reference";
+    const CURRENT_REF_FILE = "common-problems.html";
+  </script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 8: Exploring Pre-built Agents</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 8: Exploring Pre-built Agents</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 12 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Lesson 7
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Discover the pre-built AI agents ServiceNow ships out of the box, and learn why <strong>exploring an existing agent is the fastest way to learn</strong> before building your own.</p>
+  </div>
+
+  <h2>Why Start With Pre-built Agents?</h2>
+  <div class="key-concept">
+    ServiceNow ships a growing <strong>library of enterprise AI agents</strong> you can use and customize. Opening one and studying how it's wired — its instructions, tools, and structure — is the single best way to learn the patterns before you build from scratch.
+  </div>
+
+  <p>Which pre-built agents you see depends on your <strong>release, licensed products, and enabled plugins</strong>. Here are verified examples by product area:</p>
+
+  <h2>ITSM (IT Service Management)</h2>
+  <p>Shipped as <strong>agentic workflows</strong> that chain specialist agents:</p>
+  <ul>
+    <li><strong>Triage and Categorize ITSM Incidents</strong> — sets category/subcategory and identifies the affected CI</li>
+    <li><strong>Investigate and Resolve ITSM Incidents</strong></li>
+    <li><strong>Wrap Up and Resolve Incidents</strong></li>
+    <li><strong>Generate My Work Plan</strong></li>
+  </ul>
+  <p style="font-size:0.9rem; color:var(--text-secondary);"><a href="https://www.servicenow.com/community/now-assist-articles/agentic-workflows-end-to-end-setup-guide/ta-p/3489031" target="_blank">(ServiceNow — Agentic Workflows End-to-End Setup Guide)</a></p>
+
+  <h2>CSM (Customer Service Management)</h2>
+  <ul>
+    <li><strong>Triage Cases</strong> (agentic workflow)</li>
+    <li><strong>Troubleshooting Steps Identification</strong> (agent)</li>
+    <li><strong>Customer 360 Insights</strong></li>
+    <li><strong>AI Voice Agents for CSM</strong></li>
+  </ul>
+  <p style="font-size:0.9rem; color:var(--text-secondary);"><a href="https://www.servicenow.com/community/csm-articles/servicenow-otto-for-csm-agentic-workflows-and-ai-agents/ta-p/3341816" target="_blank">(ServiceNow — Otto for CSM)</a></p>
+
+  <h2>HR (HRSD)</h2>
+  <ul>
+    <li>Agentic capabilities such as recruiter draft-message review, and employee help agents</li>
+  </ul>
+  <p style="font-size:0.9rem; color:var(--text-secondary);"><a href="https://www.servicenow.com/community/hrsd-blog/agentic-ai-capabilities-for-hr/ba-p/3288346" target="_blank">(ServiceNow — Agentic AI for HR)</a></p>
+
+  <div class="note">
+    <strong>How to explore one:</strong> In <strong>AI Agent Studio</strong>, open the agent/workflow library, pick one relevant to your licensed products, and inspect its identity fields, its tools, and how (if it's a workflow) its agents are sequenced. Notice how they apply everything from Units 4–6.
+  </div>
+
+  <div class="warning">
+    <strong>⚠ Verify against your release.</strong> The exact catalog of out-of-box agents changes by release and license. Always confirm what's available by checking your instance's release notes and the AI Agent Studio library — don't assume a specific agent exists until you see it.
+  </div>
+
+  <div class="success">
+    <strong>Learning tactic:</strong> Before Unit 4's hands-on build, open one pre-built agent and answer: What is its scope (description)? Its identity (agentRole)? What tools does it have, and are they supervised or autonomous? You'll recognize every one of these concepts now.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz8" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/now-assist-articles/agentic-workflows-end-to-end-setup-guide/ta-p/3489031" class="resource-link" target="_blank">📚 Agentic Workflows End-to-End Setup Guide</a>
+
+  <div class="teacher-note">
+    <strong>💡 Which product do you use?</strong> Tell me (ITSM, CSM, HR…) and I'll point you to the most relevant pre-built agents to study first.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "Why explore a pre-built agent before building your own?",
+        options: [
+          "Because custom agents are disabled until a pre-built one is opened",
+          "Studying how an existing agent is wired teaches the patterns fastest",
+          "Pre-built agents are the only ones that can access production data",
+          "It is a mandatory licensing step required before creating any agent"
+        ],
+        correct: 1,
+        explanation: "Opening a pre-built agent and studying its instructions, tools, and structure is the fastest way to learn the real-world patterns before building from scratch."
+      },
+      {
+        question: "What determines which pre-built agents appear in your instance?",
+        options: [
+          "The number of admin users currently assigned the sn_aia.admin role",
+          "Your release, licensed products, and the plugins you have enabled",
+          "The total count of incidents stored in the instance's database",
+          "Whether the AI Control Tower has been manually switched on yet"
+        ],
+        correct: 1,
+        explanation: "The available out-of-box agents depend on your release version, which products you're licensed for, and which plugins are enabled — so always verify against your own instance."
+      },
+      {
+        question: "'Triage and Categorize ITSM Incidents' ships as what?",
+        options: [
+          "A single script tool attached to the incident table directly",
+          "An agentic workflow that chains specialist agents together",
+          "A standalone NASK skill with one prompt and no tool nodes",
+          "A Virtual Agent topic with no reasoning or tool-calling ability"
+        ],
+        correct: 1,
+        explanation: "ITSM triage/categorize/resolve capabilities ship as agentic workflows that chain multiple specialist agents — a great example of multi-agent orchestration in action."
+      },
+      {
+        question: "Before assuming a specific pre-built agent exists, you should…",
+        options: [
+          "Trust community blog posts as the definitive current catalog",
+          "Verify against your instance's release notes and Studio library",
+          "Assume every product ships the same fixed set of agents always",
+          "Build it yourself first, then check whether it already existed"
+        ],
+        correct: 1,
+        explanation: "The OOB catalog varies by release and license and changes over time. Always confirm what's actually available in your instance's release notes and the AI Agent Studio library."
+      }
+    ];
+    initQuiz('quiz8', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0008";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

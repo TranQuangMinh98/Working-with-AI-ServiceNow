@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 19: Deploying to Production & Governance</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 19: Deploying to Production &amp; Governance</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15 minutes | <strong>Level:</strong> Intermediate | <strong>Prerequisites:</strong> Lesson 18
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Take an agent live safely: choose the right <strong>channel</strong>, activate its <strong>trigger</strong>, and govern it with the <strong>AI Control Tower</strong> and built-in guardrails.</p>
+  </div>
+
+  <h2>Step 1: Choose a Channel</h2>
+  <p>A <strong>channel</strong> is where users reach your deployed agent. Pick based on where your users already are:</p>
+  <ul>
+    <li><strong>Otto Panel</strong> (Now Assist Panel) — the in-product side panel</li>
+    <li><strong>Virtual Agent</strong> — conversational chat (no trigger required)</li>
+    <li><strong>Analysis Panel</strong> — inline on a record form</li>
+    <li><strong>Microsoft Teams, Slack, SMS, email, web chat</strong> — external surfaces</li>
+  </ul>
+
+  <h2>Step 2: Activate the Trigger</h2>
+  <div class="warning">
+    <strong>⚠ The #1 deployment gotcha:</strong> Triggers deploy <strong>inactive</strong>. Your agent will do nothing on its own until you <em>manually activate</em> the trigger — and you should only do that <em>after</em> testing confirms correct behavior. Then monitor the first real runs closely.
+  </div>
+
+  <h2>Step 3: Govern with the AI Control Tower</h2>
+  <p>The <strong>AI Control Tower</strong> (expanded in the Zurich release) is the central command center to discover, govern, secure, observe, and measure every AI agent, model, and workflow on your instance. AI assets are tracked in the CMDB.</p>
+
+  <div class="key-concept">
+    <strong>Golden rule of production:</strong> Always deploy agents <em>under</em> the Control Tower — never as unmanaged, invisible automation. If you can't see it, you can't govern it. <a href="https://www.servicenow.com/community/grc-blog/servicenow-ai-control-tower-in-the-zurich-release-mastering-ai/ba-p/3365258" target="_blank">(ServiceNow — AI Control Tower)</a>
+  </div>
+
+  <h2>The Guardrails You Get</h2>
+  <p>ServiceNow ships several safety mechanisms — know their names:</p>
+  <table style="width:100%; border-collapse: collapse; margin: 1.5rem 0;">
+    <tbody>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color); width:35%;"><strong>Deny-by-default ACL</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Agents can only access what you explicitly permit.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><strong>Role masking</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Limits which roles/data the agent effectively sees.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><strong>Kill Switch</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Instantly stop an agent that misbehaves.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><strong>Now Assist Guardian</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Monitors and guards generative behavior.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><strong>Supervised mode</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Human approves risky tool calls (from Lesson 12).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>A safe go-live checklist:</strong>
+    <ol style="margin-top:0.5rem;">
+      <li>Test manually + test user access (multiple runs)</li>
+      <li>Set write-tools to Supervised; reads to Autonomous</li>
+      <li>Confirm ACLs are least-privilege</li>
+      <li>Select the channel; keep audience small at first</li>
+      <li>Activate the trigger</li>
+      <li>Watch first runs in the Control Tower; widen access gradually</li>
+    </ol>
+  </div>
+
+  <p style="font-size:0.95rem; color:var(--text-secondary);">Note: ServiceNow's governance is built on role/ACL controls, manual trigger activation, and Control Tower monitoring rather than a single mandatory sign-off step. Approval gates are implemented via <em>supervised execution</em> and instructions.</p>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz18" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/grc-blog/servicenow-ai-control-tower-in-the-zurich-release-mastering-ai/ba-p/3365258" class="resource-link" target="_blank">📚 ServiceNow AI Control Tower (Zurich)</a>
+
+  <div class="teacher-note">
+    <strong>💡 Planning a real deployment?</strong> Walk me through your agent and I'll help you build a tailored go-live checklist.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "You deployed an agent but it does nothing on its own. Most likely cause?",
+        options: [
+          "The channel selection silently failed during the deployment step",
+          "The trigger is still inactive; triggers deploy off and need activating",
+          "The agent needs a second agent before any trigger will ever fire",
+          "The AI Control Tower has not finished indexing the agent in CMDB"
+        ],
+        correct: 1,
+        explanation: "Triggers deploy inactive by design. You must manually activate the trigger after testing — this is the most common reason a freshly deployed agent seems to do nothing."
+      },
+      {
+        question: "What is the AI Control Tower's role in production?",
+        options: [
+          "It writes the agent's instructions and tool descriptions for you",
+          "It is the central place to discover, govern, secure, and observe AI",
+          "It replaces the need for ACLs by granting agents full data access",
+          "It is only a billing dashboard showing token consumption per agent"
+        ],
+        correct: 1,
+        explanation: "The AI Control Tower is the central command center to discover, govern, secure, observe, and measure all AI agents, models, and workflows. Best practice: never deploy unmanaged."
+      },
+      {
+        question: "Which mechanism lets you instantly stop a misbehaving agent?",
+        options: [
+          "Role masking, by hiding the data the agent is able to see",
+          "The Kill Switch, which immediately halts the agent's operation",
+          "Deny-by-default ACL, by revoking one permission at a time",
+          "Supervised mode, by declining the next tool approval prompt"
+        ],
+        correct: 1,
+        explanation: "The Kill Switch instantly stops an agent. The other mechanisms constrain behavior proactively, but the Kill Switch is the emergency stop."
+      },
+      {
+        question: "What's the safest way to widen access to a newly live agent?",
+        options: [
+          "Enable all channels and the full audience at once for fast feedback",
+          "Start with a small audience, watch runs, then widen access gradually",
+          "Skip monitoring since testing already proved the agent works well",
+          "Set every tool to Autonomous so the rollout is not slowed by prompts"
+        ],
+        correct: 1,
+        explanation: "Start small, monitor the first real runs in the Control Tower, and widen access gradually. This limits blast radius if the agent behaves unexpectedly in production."
+      }
+    ];
+    initQuiz('quiz18', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0018";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

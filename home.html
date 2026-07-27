@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ServiceNow AI Agents — Course Home</title>
+  <link rel="stylesheet" href="assets/lesson-styles.css">
+  <link rel="stylesheet" href="assets/nav-styles.css">
+</head>
+<body class="home-in-frame">
+  <div class="lesson-content">
+    <div class="course-hero">
+      <h1>ServiceNow AI Agents</h1>
+      <p>From Beginner to Builder — a hands-on course</p>
+      <div class="progress-bar-outer">
+        <div class="progress-bar-inner" id="overall-progress" style="width: 0%"></div>
+      </div>
+      <p style="font-size: 0.95rem; margin-top: 0.5rem;" id="progress-text">0% complete</p>
+    </div>
+
+    <div class="note">
+      <strong>How to use this course:</strong> Work through the units in order. Each lesson is short (15–20 min) and ends with a quiz. Use the menu on the left to jump between lessons — your progress is saved automatically in this browser. Click <strong>"Mark complete"</strong> at the bottom of each lesson when you finish it.
+    </div>
+
+    <div id="units-container"></div>
+
+    <div class="unit-card reference-card">
+      <h2>📚 Reference Materials</h2>
+      <p style="margin-top:-0.4rem;">Handy pages to keep open while you build. They cross-link with the lessons.</p>
+      <ol>
+        <li><a href="reference/glossary.html" target="_blank">
+          <span>📖</span><span>Glossary — every term this course uses</span></a></li>
+        <li><a href="reference/plugins.html" target="_blank">
+          <span>🧩</span><span>Plugins &amp; Apps — what to install for each unit</span></a></li>
+        <li><a href="reference/common-problems.html" target="_blank">
+          <span>🛠️</span><span>Common Problems — symptoms, causes &amp; fixes</span></a></li>
+      </ol>
+    </div>
+
+    <div class="teacher-note">
+      <strong>💡 Remember:</strong> I'm your teacher. At any point, ask me questions about anything unclear, request deeper explanations, or ask for extra practice. Learning sticks best when you engage actively.
+    </div>
+  </div>
+
+  <script src="assets/course-data.js"></script>
+  <script>
+    // Tell the shell (if we're inside it) that "home" is showing
+    try { localStorage.setItem("sn-aiagent-current", "home"); } catch (e) {}
+
+    function statusIcon(lessonId) {
+      const status = getLessonStatus(lessonId);
+      if (status === "complete") return '<span class="nav-status complete">✓</span>';
+      if (status === "visited") return '<span class="nav-status visited">◐</span>';
+      return '<span class="nav-status">○</span>';
+    }
+
+    function render() {
+      const container = document.getElementById("units-container");
+      let html = "";
+      COURSE.units.forEach(unit => {
+        html += `<div class="unit-card"><h2>${unit.title}</h2><ol>`;
+        unit.lessons.forEach(lesson => {
+          html += `<li><a href="lessons/${lesson.file}">
+            ${statusIcon(lesson.id)}
+            <span>${lesson.title}</span>
+          </a></li>`;
+        });
+        html += `</ol></div>`;
+      });
+      container.innerHTML = html;
+
+      const total = COURSE_LESSONS_FLAT.length;
+      const complete = COURSE_LESSONS_FLAT.filter(l => getLessonStatus(l.id) === "complete").length;
+      const pct = Math.round((complete / total) * 100);
+      document.getElementById("overall-progress").style.width = pct + "%";
+      document.getElementById("progress-text").textContent =
+        `${pct}% complete — ${complete} of ${total} lessons`;
+    }
+
+    render();
+
+    // Open a lesson. If we're inside the shell, ask it to navigate (seamless
+    // crossfade). If opened standalone, fade the window out then navigate.
+    const inFrame = window.self !== window.top;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (!link) return;
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey ||
+          e.shiftKey || e.altKey) return;
+      if (link.target === "_blank" || link.hasAttribute("download")) return;
+      const href = link.getAttribute("href");
+      if (!href || !href.toLowerCase().includes(".html")) return;
+      if (/^[a-z]+:/i.test(href) && !href.startsWith("file:")) return;
+
+      if (inFrame) {
+        const m = href.match(/(\d{4})-[^/]*\.html/);
+        const f = m && COURSE_LESSONS_FLAT.find(l => l.file.startsWith(m[1] + "-"));
+        if (f) {
+          e.preventDefault();
+          try { window.parent.postMessage({ type: "navigate", target: f.id }, "*"); }
+          catch (err) { window.location.href = link.href; }
+        }
+        return;
+      }
+      if (reduceMotion) return;
+      e.preventDefault();
+      document.body.classList.add("page-leaving");
+      setTimeout(() => { window.location.href = link.href; }, 170);
+    });
+    window.addEventListener("pageshow", () => {
+      document.body.classList.remove("page-leaving");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 14: Custom Skills with Skill Kit</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 14: Custom Skills with the Now Assist Skill Kit</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 18 minutes | <strong>Level:</strong> Intermediate | <strong>Prerequisites:</strong> Lesson 13
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Understand what the <strong>Now Assist Skill Kit (NASK)</strong> is, build a custom generative skill step-by-step, and learn how to attach that skill to an AI agent as a tool.</p>
+  </div>
+
+  <h2>What Is a Skill?</h2>
+  <p>A <strong>Skill</strong> is a single, prompt-driven generative capability. It takes a configured prompt (plus optional inputs and grounding data), sends it to an LLM, and returns generated output. Think of it as a reusable "generative building block."</p>
+
+  <div class="key-concept">
+    <strong>Skills vs. Agents:</strong> A skill is <em>one</em> generative action (e.g., "summarize this incident"). An agent <em>reasons and plans</em> across many tools — and a skill can be one of those tools. Skills are building blocks; agents orchestrate them.
+  </div>
+
+  <h2>Prerequisites (Verify First)</h2>
+  <ul>
+    <li>Active Now Assist license</li>
+    <li>Instance on <strong>Xanadu or later</strong></li>
+    <li>The <strong>Now Assist Skill Kit</strong> plugin installed</li>
+    <li>Role <code>sn_skill_builder.admin</code> (builder) or <code>sn_skill_builder.viewer</code></li>
+  </ul>
+
+  <div class="warning">
+    <strong>⚠ NASK is NOT available on PDIs</strong> (Personal Developer Instances). You'll need an enterprise instance with Now Assist entitlements to build skills. <a href="https://www.servicenow.com/community/now-assist-articles/now-assist-skill-kit-nask-faq/ta-p/3007953" target="_blank">(NASK FAQ)</a>
+  </div>
+
+  <h2>Building a Skill: Step by Step</h2>
+  <p>Here's the verified click-path to build a custom skill: <a href="https://www.servicenow.com/community/developer-blog/creating-a-custom-skill-with-now-assist-skill-kit-part-1/bc-p/3452784" target="_blank">(ServiceNow — Creating a Custom Skill, Part 1)</a></p>
+
+  <ol>
+    <li>Go to <strong>All &gt; Now Assist Skill Kit &gt; Home</strong>, click <strong>Create skill</strong>.</li>
+    <li>Enter a <strong>Name</strong> and <strong>Description</strong>.</li>
+    <li>Select provider <strong>Now LLM Service</strong> and Provider API <strong>Now LLM Generic</strong> (or choose a third-party LLM via BYOK).</li>
+    <li>Author the <strong>prompt</strong> — write your own, pick from the library, or use an AI-generated draft. Then click <strong>Use prompt &gt; Next</strong>.</li>
+    <li><strong>Define inputs</strong> with <strong>+ Add</strong> (typed, e.g. strings). Use descriptive input names — the agent uses them to populate values.</li>
+    <li>Review the <strong>Skill outputs</strong> tab, then <strong>Go to Summary &gt; Finish</strong>.</li>
+    <li>(Optional) Add <strong>tool nodes</strong> inside the skill — like a Retriever (RAG) node — to ground the prompt in real data.</li>
+    <li><strong>Test</strong> via the Test prompt panel, then <strong>publish and activate</strong> the skill in the <strong>Now Assist Admin console</strong>.</li>
+  </ol>
+
+  <div class="diagram">
+    <div class="architecture-box">Prompt<br><small>+ inputs</small></div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:#9C27B0;">LLM<br><small>generates</small></div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:var(--success-color);">Output</div>
+  </div>
+
+  <h2>Attaching a Skill to an Agent</h2>
+  <p>Once your skill is <strong>published and activated</strong>, it can be added to an AI agent as a <strong>"Now Assist skill" tool</strong>. The agent's orchestrator will call it like any other tool.</p>
+
+  <div class="warning">
+    <strong>⚠ Order matters:</strong> A skill must be published <em>and</em> activated in the Now Assist Admin console <strong>before</strong> it can be attached to an agent. If you can't find your skill in the tool picker, this is usually why.
+  </div>
+
+  <div class="note">
+    <strong>Debugging tip:</strong> When testing a skill, inspect the <strong>Grounded prompt</strong> tab (the final prompt actually sent to the LLM, with data filled in) and the <strong>Tools</strong> tab. These reveal exactly what the model saw.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz14" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://servicenow.github.io/sdk/guides/nowassist-skills-guide" class="resource-link" target="_blank">📚 Fluent SDK — AI Skills Guide</a>
+  <a href="https://www.servicenow.com/community/now-assist-articles/now-assist-skill-kit-nask-faq/ta-p/3007953" class="resource-link" target="_blank">📚 NASK FAQ</a>
+
+  <div class="teacher-note">
+    <strong>💡 No enterprise instance?</strong> Ask me — I can walk you through the concepts with worked examples even if you can't build a skill hands-on right now.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What is the essential difference between a Skill and an Agent?",
+        options: [
+          "A skill reasons across many tools; an agent runs one fixed prompt",
+          "A skill is one generative action; an agent reasons across many tools",
+          "A skill needs no license; an agent requires a Now Assist entitlement",
+          "A skill only reads data; an agent is the only thing that writes data"
+        ],
+        correct: 1,
+        explanation: "A skill is a single prompt-driven generative capability. An agent reasons and plans across multiple tools — one of which can be a skill. Skills are building blocks; agents orchestrate."
+      },
+      {
+        question: "Before a custom skill can be attached to an agent, it must be…",
+        options: [
+          "Exported to an update set and then imported into the target scope",
+          "Published and activated in the Now Assist Admin console beforehand",
+          "Converted into a Script tool because agents cannot call skills at all",
+          "Assigned the sn_aia.admin role directly on the skill record itself"
+        ],
+        correct: 1,
+        explanation: "A skill must be published AND activated in the Now Assist Admin console before it appears in the agent tool picker. This is the most common 'my skill is missing' cause."
+      },
+      {
+        question: "Which environment CANNOT be used to build NASK skills?",
+        options: [
+          "An enterprise instance that has active Now Assist entitlements set",
+          "A PDI (Personal Developer Instance), where NASK is not available",
+          "A sub-production instance cloned from an entitled production one",
+          "Any instance running the Xanadu release or a later platform version"
+        ],
+        correct: 1,
+        explanation: "NASK is not available on PDIs. You need an enterprise instance (Xanadu+) with Now Assist entitlements and the Skill Kit plugin."
+      },
+      {
+        question: "When debugging a skill, what does the 'Grounded prompt' tab show?",
+        options: [
+          "The list of every agent that currently references this skill as tool",
+          "The final prompt actually sent to the LLM with all data filled in",
+          "The raw JavaScript source code of the underlying script tool node",
+          "A history of every user who has ever executed this particular skill"
+        ],
+        correct: 1,
+        explanation: "The Grounded prompt tab shows the fully-assembled prompt (with inputs and retrieved data inserted) that was actually sent to the model — invaluable for understanding the skill's output."
+      }
+    ];
+    initQuiz('quiz14', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0014";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

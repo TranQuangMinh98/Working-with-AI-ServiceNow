@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 5: Accessing AI Agent Studio</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 5: Accessing AI Agent Studio</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 10 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Lesson 4
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Find your way into <strong>AI Agent Studio</strong>, understand its main areas, and know how it differs from Now Assist.</p>
+  </div>
+
+  <h2>What Is AI Agent Studio?</h2>
+  <p><strong>AI Agent Studio</strong> is the workspace where you create, configure, test, and deploy AI agents and agentic workflows. It's your home base for everything in Units 4–6.</p>
+
+  <div class="key-concept">
+    <strong>Studio vs. Now Assist — don't confuse them:</strong>
+    <ul style="margin-top:0.5rem;">
+      <li><strong>Now Assist</strong> = the broader generative-AI product family (skills, summarization, Q&amp;A) that surfaces AI to end users.</li>
+      <li><strong>AI Agent Studio</strong> = the specific builder tool where <em>you</em> design and manage autonomous agents.</li>
+    </ul>
+    Agents build <em>on</em> the Now Assist foundation; the Studio is where you assemble them.
+  </div>
+
+  <h2>How to Open It</h2>
+  <p>Once plugins are installed and you have the right role (next lesson):</p>
+  <ol>
+    <li>In the platform navigator, filter for <strong>AI Agent Studio</strong>.</li>
+    <li>Go to <strong>All &gt; AI Agent Studio &gt; Overview</strong> for the landing/home page.</li>
+    <li>To build, go to <strong>All &gt; AI Agent Studio &gt; Create and manage &gt; AI agents</strong> (or <strong>Agentic workflows</strong>).</li>
+  </ol>
+
+  <h2>The Main Areas You'll Use</h2>
+  <table style="width:100%; border-collapse: collapse; margin: 1.5rem 0;">
+    <tbody>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color); width:40%;"><strong>Overview</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Landing page — status, entry points, and pre-built agents.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><strong>Create and manage &gt; AI agents</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Where you build and edit individual agents.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><strong>Create and manage &gt; Agentic workflows</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Where you compose multiple agents (Unit 6).</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><strong>Testing interface</strong></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Run agents, watch the chain of thought (Lesson 15).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>Can't see AI Agent Studio in the navigator?</strong> The two usual causes: (1) the plugins from Lesson 4 aren't installed, or (2) your user is missing the <code>sn_aia.admin</code> role — which is exactly what we set up in the next lesson.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz5" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/docs/r/intelligent-experiences/configuring-ai-agents.html" class="resource-link" target="_blank">📚 ServiceNow Docs — Configure Now Assist AI Agents</a>
+
+  <div class="teacher-note">
+    <strong>💡 Exploring the Studio now?</strong> Tell me what you see on the Overview page and I'll help you orient.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What is the difference between Now Assist and AI Agent Studio?",
+        options: [
+          "They are two names for the exact same builder application screen",
+          "Now Assist is the broad GenAI family; Studio is the agent builder",
+          "Now Assist builds agents; the Studio only surfaces them to users",
+          "AI Agent Studio is the license and Now Assist is the plugin name"
+        ],
+        correct: 1,
+        explanation: "Now Assist is the broader generative-AI product family surfacing AI to users. AI Agent Studio is the specific builder tool where you design and manage autonomous agents."
+      },
+      {
+        question: "What is the navigation path to the Studio's landing page?",
+        options: [
+          "All > Now Assist Admin > Console > Overview landing screen",
+          "All > AI Agent Studio > Overview for the landing home page",
+          "All > Flow Designer > Agentic workflows > Overview panel",
+          "All > System Definition > AI Agents > Overview dashboard"
+        ],
+        correct: 1,
+        explanation: "Go to All > AI Agent Studio > Overview for the landing page. To build, use Create and manage > AI agents (or Agentic workflows)."
+      },
+      {
+        question: "You can't find AI Agent Studio in the navigator. Likely cause?",
+        options: [
+          "The instance has too many incidents for the menu to load it",
+          "Plugins aren't installed, or you lack the sn_aia.admin role",
+          "AI Agent Studio only appears on the first day after a release",
+          "Studio is hidden until you have built at least one skill first"
+        ],
+        correct: 1,
+        explanation: "The two usual causes are missing plugins (Lesson 4) or a missing sn_aia.admin role. Roles are covered in the next lesson."
+      },
+      {
+        question: "Where in the Studio do you compose multiple agents together?",
+        options: [
+          "Overview, by dragging agents onto the landing status page",
+          "Create and manage > Agentic workflows, the multi-agent area",
+          "The testing interface, which doubles as the workflow editor",
+          "Now Assist Skill Kit, since workflows are just chained skills"
+        ],
+        correct: 1,
+        explanation: "Create and manage > Agentic workflows is where you compose multiple agents into a coordinated workflow (the focus of Unit 6)."
+      }
+    ];
+    initQuiz('quiz5', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0005";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

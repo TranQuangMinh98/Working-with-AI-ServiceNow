@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 7: What AI Agents Can Do</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 7: What AI Agents Can Do</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 12 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Unit 2
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Map the real capabilities of ServiceNow AI agents to concrete outcomes — so you can spot good agent opportunities in your own organization.</p>
+  </div>
+
+  <h2>The Capability Spectrum</h2>
+  <p>AI agent capability grows with the tools you give it. Think of three tiers:</p>
+
+  <div class="diagram">
+    <div class="architecture-box" style="border-color:var(--primary-color);">
+      <strong>Tier 1: Inform</strong><br><small>look up &amp; explain</small>
+    </div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:var(--warning-color);">
+      <strong>Tier 2: Act</strong><br><small>create &amp; update records</small>
+    </div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:var(--success-color);">
+      <strong>Tier 3: Orchestrate</strong><br><small>multi-step workflows</small>
+    </div>
+  </div>
+
+  <h2>Tier 1 — Inform (read-only, safest)</h2>
+  <ul>
+    <li>"What are my open incidents?" → looks up and summarizes</li>
+    <li>"What's the expense reimbursement process?" → retrieves from knowledge (RAG)</li>
+    <li>"Show critical servers in the Chicago datacenter" → queries the CMDB</li>
+  </ul>
+
+  <h2>Tier 2 — Act (create/update, needs guardrails)</h2>
+  <ul>
+    <li>Create an incident from a natural-language description</li>
+    <li>Update a ticket's priority or add a work note</li>
+    <li>Categorize and route an incident to the right group</li>
+  </ul>
+
+  <h2>Tier 3 — Orchestrate (multi-agent workflows)</h2>
+  <ul>
+    <li>Triage a case → investigate → draft a resolution (a chain of agents)</li>
+    <li>Onboard a new hire: provision access, order hardware, schedule training</li>
+    <li>End-to-end incident lifecycle: categorize → investigate → resolve → wrap up</li>
+  </ul>
+
+  <div class="key-concept">
+    <strong>The pattern:</strong> Capability = reasoning (the LLM) + tools (what it can touch) + orchestration (how agents combine). You unlock higher tiers by adding tools and composing agents — which is exactly what Units 5 and 6 teach.
+  </div>
+
+  <h2>Match the Tier to the Risk</h2>
+  <div class="warning">
+    <strong>⚠ Higher tier = higher stakes.</strong> Tier 1 (read) is nearly always safe to run autonomously. Tiers 2 and 3 touch or change data, so they need supervised execution, tight ACLs, and careful testing. Start users on Tier 1 wins, then earn trust upward.
+  </div>
+
+  <h2>Spotting a Good Agent Opportunity</h2>
+  <p>A task is a strong AI-agent candidate when it:</p>
+  <ul>
+    <li>Arrives as <strong>natural language</strong> (not a rigid form)</li>
+    <li>Needs <strong>context or judgment</strong> to handle well</li>
+    <li>Involves <strong>several steps</strong> a human would otherwise stitch together</li>
+    <li>Happens <strong>often enough</strong> to be worth automating</li>
+  </ul>
+  <p>If a task is high-volume, identical every time, and needs zero judgment — a traditional flow is the better tool (recall Lesson 1).</p>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz7" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/now-assist-articles/introducing-ai-agents-unlock-autonomous-productivity-at-scale/ta-p/3200447" class="resource-link" target="_blank">📚 Introducing AI Agents — Quick Start</a>
+
+  <div class="teacher-note">
+    <strong>💡 Have a task in mind?</strong> Describe it and I'll help you classify its tier and judge whether an agent or a flow fits best.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "Which capability tier is nearly always safe to run autonomously?",
+        options: [
+          "Tier 3 orchestrate, since workflows have the most built-in safeguards",
+          "Tier 1 inform, because read-only lookups do not change any data",
+          "Tier 2 act, because creating records is reversible with an undo",
+          "All tiers equally, since agents never make mistakes with data"
+        ],
+        correct: 1,
+        explanation: "Tier 1 (inform/read-only) is nearly always safe to run autonomously because it doesn't change data. Tiers 2 and 3 modify data and need guardrails."
+      },
+      {
+        question: "What combination unlocks higher agent capability tiers?",
+        options: [
+          "Reasoning plus more tools plus orchestration across agents",
+          "A faster instance plus more admin users assigned to the agent",
+          "Removing guardrails so the agent can act without any approval",
+          "Switching every tool to autonomous mode regardless of its risk"
+        ],
+        correct: 0,
+        explanation: "Capability = reasoning (LLM) + tools (what it can touch) + orchestration (how agents combine). You add tools and compose agents to reach higher tiers — the subject of Units 5 and 6."
+      },
+      {
+        question: "Which task is the STRONGEST candidate for an AI agent?",
+        options: [
+          "Incrementing a counter identically on every single record creation",
+          "A natural-language request needing context and several stitched steps",
+          "Sorting a fixed dataset alphabetically on a strict hourly schedule",
+          "A high-volume identical calculation requiring zero human judgment"
+        ],
+        correct: 1,
+        explanation: "Natural-language entry, need for judgment/context, and multi-step handling all point to an agent. High-volume identical zero-judgment tasks are better served by traditional flows."
+      },
+      {
+        question: "How should you sequence rolling agents out to users?",
+        options: [
+          "Launch Tier 3 orchestration first to demonstrate maximum impact",
+          "Start with Tier 1 read-only wins, then earn trust toward higher tiers",
+          "Deploy all tiers simultaneously so users see the full capability",
+          "Only ever deploy Tier 1 because higher tiers are unsafe to use"
+        ],
+        correct: 1,
+        explanation: "Start users on safe Tier 1 wins to build confidence, then progress to Tier 2 and 3 as trust and testing justify the higher stakes. Match tier to risk."
+      }
+    ];
+    initQuiz('quiz7', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0007";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1: What Are ServiceNow AI Agents?</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 1: What Are ServiceNow AI Agents?</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15-20 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> None
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>By the end of this lesson, you'll understand what ServiceNow AI agents are, how they differ from traditional automation, and what problems they solve in modern IT service management.</p>
+  </div>
+
+  <h2>What Is an AI Agent?</h2>
+
+  <p>Imagine you have a highly skilled employee who can:</p>
+  <ul>
+    <li>Understand requests in natural language</li>
+    <li>Make intelligent decisions based on context</li>
+    <li>Execute complex, multi-step tasks autonomously</li>
+    <li>Learn from interactions and improve over time</li>
+    <li>Work 24/7 without fatigue</li>
+  </ul>
+
+  <p>That's essentially what a <strong>ServiceNow AI agent</strong> is—an intelligent software system that can understand, reason, and act within your ServiceNow environment.</p>
+
+  <div class="key-concept">
+    <strong>Key Concept:</strong> An AI agent is not just a chatbot or a workflow automation. It's an autonomous system that can perceive its environment (ServiceNow data and context), make decisions using AI models, and take actions to achieve specific goals.
+  </div>
+
+  <h2>Traditional Automation vs. AI Agents</h2>
+
+  <p>Let's understand the fundamental difference:</p>
+
+  <div class="diagram">
+    <div style="display: inline-block; vertical-align: top; margin: 1rem;">
+      <h3 style="color: var(--secondary-color);">Traditional Workflow</h3>
+      <div class="architecture-box" style="background: #FFE6E6;">
+        IF condition A<br>
+        THEN action 1<br>
+        ELSE action 2
+      </div>
+      <p style="font-size: 0.9rem; margin-top: 1rem; max-width: 250px;">
+        ❌ Rigid rules<br>
+        ❌ Can't handle unexpected scenarios<br>
+        ❌ Requires exact input format
+      </p>
+    </div>
+
+    <div style="display: inline-block; vertical-align: top; margin: 1rem;">
+      <h3 style="color: var(--primary-color);">AI Agent</h3>
+      <div class="architecture-box" style="background: #E6F7FF;">
+        UNDERSTAND context<br>
+        REASON about options<br>
+        ACT intelligently
+      </div>
+      <p style="font-size: 0.9rem; margin-top: 1rem; max-width: 250px;">
+        ✓ Understands natural language<br>
+        ✓ Adapts to new situations<br>
+        ✓ Makes contextual decisions
+      </p>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Real-World Example:</strong> A traditional workflow might reset a password only if you fill out a specific form. An AI agent can understand "I can't log into my email" and determine that a password reset is needed, verify your identity, execute the reset, and follow up—all without rigid form fields.
+  </div>
+
+  <h2>Core Components of a ServiceNow AI Agent</h2>
+
+  <p>Every ServiceNow AI agent has three essential components:</p>
+
+  <ol>
+    <li>
+      <strong>Perception Layer</strong> – How the agent "sees" and understands requests
+      <ul>
+        <li>Natural Language Understanding (NLU)</li>
+        <li>Access to ServiceNow data (tables, records, user context)</li>
+        <li>Integration with external systems</li>
+      </ul>
+    </li>
+
+    <li>
+      <strong>Decision Layer</strong> – How the agent "thinks" and plans
+      <ul>
+        <li>Large Language Models (LLMs) for reasoning</li>
+        <li>Business rules and policies</li>
+        <li>Context awareness (user role, history, urgency)</li>
+      </ul>
+    </li>
+
+    <li>
+      <strong>Action Layer</strong> – How the agent "acts" in ServiceNow
+      <ul>
+        <li>Skills (pre-built or custom capabilities)</li>
+        <li>API calls to ServiceNow tables</li>
+        <li>Integration with third-party systems</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="diagram">
+    <h3>AI Agent Architecture Flow</h3>
+    <div style="margin: 2rem 0;">
+      <div class="architecture-box">User Request</div>
+      <div class="architecture-arrow">→</div>
+      <div class="architecture-box" style="border-color: #FFC107;">Perception<br><small>(Understand)</small></div>
+      <div class="architecture-arrow">→</div>
+      <div class="architecture-box" style="border-color: #9C27B0;">Decision<br><small>(Reason)</small></div>
+      <div class="architecture-arrow">→</div>
+      <div class="architecture-box" style="border-color: var(--success-color);">Action<br><small>(Execute)</small></div>
+      <div class="architecture-arrow">→</div>
+      <div class="architecture-box">Result</div>
+    </div>
+  </div>
+
+  <h2>What Can AI Agents Do?</h2>
+
+  <p>ServiceNow AI agents excel at tasks that require understanding, reasoning, and multi-step execution:</p>
+
+  <div class="success">
+    <strong>✓ Employee Self-Service</strong>
+    <ul style="margin-top: 0.5rem;">
+      <li>"Request a laptop for my new team member starting next Monday"</li>
+      <li>"I need VPN access for a client project"</li>
+      <li>"Book a conference room for 10 people next week"</li>
+    </ul>
+  </div>
+
+  <div class="success">
+    <strong>✓ IT Service Management</strong>
+    <ul style="margin-top: 0.5rem;">
+      <li>Incident triage and routing to the right team</li>
+      <li>Automated troubleshooting and resolution</li>
+      <li>Proactive problem detection and prevention</li>
+    </ul>
+  </div>
+
+  <div class="success">
+    <strong>✓ Knowledge & Discovery</strong>
+    <ul style="margin-top: 0.5rem;">
+      <li>"What's the process for expense reimbursement?"</li>
+      <li>"Find all critical servers in the Chicago datacenter"</li>
+      <li>"Show me open incidents affecting the sales team"</li>
+    </ul>
+  </div>
+
+  <div class="warning">
+    <strong>⚠ What AI Agents Are NOT Good At:</strong>
+    <ul style="margin-top: 0.5rem;">
+      <li>Tasks requiring 100% accuracy with zero error tolerance (use traditional workflows)</li>
+      <li>Actions that must follow rigid compliance processes without any flexibility</li>
+      <li>Extremely high-volume, simple repetitive tasks (traditional automation is more efficient)</li>
+    </ul>
+  </div>
+
+  <h2>Why Use AI Agents in ServiceNow?</h2>
+
+  <p>Organizations adopt AI agents to solve key challenges:</p>
+
+  <ul>
+    <li><strong>Scale Support:</strong> Handle thousands of requests simultaneously without hiring more staff</li>
+    <li><strong>Reduce Resolution Time:</strong> Instantly respond and resolve common issues 24/7</li>
+    <li><strong>Improve User Experience:</strong> Natural conversation instead of navigating complex portals</li>
+    <li><strong>Free Up Human Experts:</strong> Let skilled staff focus on complex problems, not routine requests</li>
+    <li><strong>Consistent Service:</strong> Every user gets the same high-quality experience</li>
+  </ul>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <p>Test what you've learned with this quick quiz:</p>
+
+    <div id="quiz1" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+
+  <p>To deepen your understanding, explore the official documentation:</p>
+
+  <a href="https://docs.servicenow.com/" class="resource-link" target="_blank">📚 ServiceNow AI Agent Documentation</a>
+  <a href="https://www.servicenow.com/community/" class="resource-link" target="_blank">💬 ServiceNow Community Forums</a>
+
+  <div class="teacher-note">
+    <strong>💡 Questions or Confused?</strong> Don't hesitate to ask your AI teacher (that's me!) any questions. I'm here to clarify concepts, provide examples, or dive deeper into any topic that interests you.
+  </div>
+
+  <div class="next-steps">
+    <h2>What's Next?</h2>
+    <p>Now that you understand <em>what</em> AI agents are, your next lesson will cover:</p>
+    <ul>
+      <li><strong>Setting up your ServiceNow environment</strong> for AI agents</li>
+      <li><strong>Required plugins and prerequisites</strong></li>
+      <li><strong>Activating your first AI agent</strong></li>
+    </ul>
+    <p style="margin-top: 1rem;">When you're ready, let your teacher know and we'll move forward!</p>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    // Quiz questions for Lesson 1
+    const questions = [
+      {
+        question: "What is the key difference between traditional workflow automation and AI agents?",
+        options: [
+          "AI agents are faster than workflows and execute code more efficiently",
+          "AI agents can understand context and make intelligent decisions flexibly",
+          "AI agents require less configuration than traditional workflows in setup",
+          "AI agents work offline while workflows require internet connection always"
+        ],
+        correct: 1,
+        explanation: "The fundamental difference is that AI agents can understand context, reason about situations, and adapt their behavior—unlike traditional workflows that follow rigid, pre-defined rules."
+      },
+      {
+        question: "Which of these is NOT a core component of a ServiceNow AI agent?",
+        options: [
+          "Perception Layer that understands requests using natural language processing",
+          "Decision Layer that reasons using AI models and business context rules",
+          "Database Layer that stores all historical user interaction logs permanently",
+          "Action Layer that executes tasks through skills and integrations available"
+        ],
+        correct: 2,
+        explanation: "The three core components are Perception (understanding), Decision (reasoning), and Action (executing). While agents may use data, a 'Database Layer' is not a core architectural component of the agent itself."
+      },
+      {
+        question: "What type of task are AI agents BEST suited for?",
+        options: [
+          "Processing millions of identical transactions every second with consistency",
+          "Understanding natural language requests and executing multi-step workflows",
+          "Performing calculations that require perfect accuracy with zero errors",
+          "Following rigid compliance processes without any flexibility or judgment"
+        ],
+        correct: 1,
+        explanation: "AI agents excel at understanding natural language, making contextual decisions, and orchestrating complex multi-step tasks. For high-volume simple tasks or zero-error requirements, traditional automation is often better."
+      },
+      {
+        question: "Which scenario is an ideal use case for a ServiceNow AI agent?",
+        options: [
+          "A user asks: 'I need a laptop for my new hire starting Monday'",
+          "Automatically incrementing a counter field every time record is created",
+          "Validating that email addresses match exact regular expression patterns",
+          "Sorting a million records alphabetically every hour on schedule"
+        ],
+        correct: 0,
+        explanation: "The laptop request requires understanding intent, gathering context (who, when, what type), and orchestrating multiple steps—perfect for an AI agent. The other scenarios are better handled by traditional automation."
+      }
+    ];
+
+    // Initialize the quiz
+    initQuiz('quiz1', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0001";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

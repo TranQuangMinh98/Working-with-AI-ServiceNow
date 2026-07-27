@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 18: Multi-Agent Orchestration</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 18: Multi-Agent Orchestration</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15 minutes | <strong>Level:</strong> Intermediate | <strong>Prerequisites:</strong> Lesson 17
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Learn when to use <strong>one agent</strong> versus a <strong>team of agents</strong>, how the orchestrator coordinates them, and the steps to build your first agentic workflow.</p>
+  </div>
+
+  <h2>The Orchestrator: A Digital Manager</h2>
+  <p>When multiple agents work together, the <strong>AI Agent Orchestrator</strong> coordinates them. ServiceNow describes it as a "digital manager" — it plans the work, decides which agent handles each part, sequences their actions, and passes data between them.</p>
+
+  <div class="diagram">
+    <div class="architecture-box" style="border-color:var(--primary-color); background:#E7F3FF;">
+      🧠 <strong>Orchestrator</strong><br><small>plans &amp; routes</small>
+    </div>
+    <div style="margin-top:1rem;">
+      <div class="architecture-arrow" style="font-size:1.2rem;">↓ delegates to ↓</div>
+    </div>
+    <div style="margin-top:1rem;">
+      <div class="architecture-box" style="border-color:#9C27B0;">🤖 Triage Agent</div>
+      <div class="architecture-box" style="border-color:#9C27B0;">🤖 Research Agent</div>
+      <div class="architecture-box" style="border-color:#9C27B0;">🤖 Resolution Agent</div>
+    </div>
+  </div>
+
+  <h2>One Agent or a Team? The Decision Rule</h2>
+  <div class="key-concept">
+    From the Fluent SDK: use <strong>ONE agent</strong> when tools operate on the <em>same table/capability</em>. Use an <strong>AGENTIC WORKFLOW</strong> (multiple agents) when you have <em>different capability types</em>, or the task is "Fetch X AND do Y" / "Get data THEN process it." <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" target="_blank">(Fluent SDK)</a>
+  </div>
+
+  <table style="width:100%; border-collapse: collapse; margin: 1.5rem 0;">
+    <thead>
+      <tr style="background: var(--code-bg);">
+        <th style="text-align:left; padding:0.6rem; border:1px solid var(--border-color);">Use ONE agent</th>
+        <th style="text-align:left; padding:0.6rem; border:1px solid var(--border-color);">Use a WORKFLOW (many agents)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">All tools hit the incident table</td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">One agent reads HR data, another updates IT records</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">"Update the priority of this ticket"</td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">"Triage the case THEN draft a resolution"</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">≤ 5 tools, one capability</td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Multiple distinct capabilities</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Building an Agentic Workflow</h2>
+  <p>The verified steps <a href="https://www.servicenow.com/docs/r/intelligent-experiences/configure-use-case-ai-agents.html" target="_blank">(ServiceNow docs — Create an agentic workflow)</a>:</p>
+  <ol>
+    <li>Go to <strong>All &gt; AI Agent Studio &gt; Create and manage &gt; Agentic workflows &gt; New</strong>.</li>
+    <li><strong>Define key requirements</strong> — the workflow's goal and scope.</li>
+    <li><strong>Define security controls</strong> — ACLs and run-as identity.</li>
+    <li><strong>Add a trigger</strong> — record event, email, schedule, or none.</li>
+    <li><strong>Select channels and access</strong> — where it's available.</li>
+    <li><strong>Test execution manually</strong> and <strong>Test user access</strong>.</li>
+  </ol>
+
+  <div class="warning">
+    <strong>⚠ Deploy agents first.</strong> An agent must be <em>deployed</em> before you can add it to a workflow. The workflow stores a <code>team</code> object whose members are the agents' sys_ids. Workflows live in the <code>sn_aia_usecase</code> table.
+  </div>
+
+  <div class="success">
+    <strong>Real pre-built examples</strong> ServiceNow ships as agentic workflows: CSM's <em>"Triage Cases,"</em> and ITSM's <em>"Triage and Categorize Incidents"</em> → <em>"Investigate and Resolve"</em> → <em>"Wrap Up and Resolve."</em> Each chains several specialist agents. You'll explore these in Unit 3.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz17" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/docs/r/intelligent-experiences/configure-use-case-ai-agents.html" class="resource-link" target="_blank">📚 ServiceNow Docs — Create an Agentic Workflow</a>
+
+  <div class="teacher-note">
+    <strong>💡 Not sure how to split your agents?</strong> Describe your process and I'll help you draw the agent boundaries.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "When should you use a single agent rather than an agentic workflow?",
+        options: [
+          "When the tools all operate on the same table or single capability",
+          "Whenever the process involves more than five distinct tool types",
+          "When you need one agent to fetch data and another to process it",
+          "Only when no trigger is required and users start it on demand"
+        ],
+        correct: 0,
+        explanation: "Use one agent when tools share a table/capability. Reach for a multi-agent workflow when you have different capability types or 'fetch X THEN do Y' sequencing."
+      },
+      {
+        question: "What role does the AI Agent Orchestrator play?",
+        options: [
+          "It stores the conversation transcript for later audit and review",
+          "It plans, routes, and sequences work across agents like a manager",
+          "It enforces the String-only rule on every subflow tool boundary",
+          "It is the trigger that launches the workflow when a record changes"
+        ],
+        correct: 1,
+        explanation: "The orchestrator is the LLM-driven 'digital manager' that plans the work, delegates to the right agent, sequences actions, and passes data between agents."
+      },
+      {
+        question: "What must be true before you can add an agent to an agentic workflow?",
+        options: [
+          "The agent must already be deployed before it can join a workflow",
+          "The agent must have at least five tools attached to it first",
+          "The agent must be converted from the legacy Use Case format",
+          "The agent must share the exact same trigger as the workflow"
+        ],
+        correct: 0,
+        explanation: "Agents must be deployed before being added to a workflow. The workflow's team object references deployed agents by their sys_ids."
+      },
+      {
+        question: "'Triage the case THEN draft a resolution' is best built as…",
+        options: [
+          "A single agent, since both steps involve the same case record",
+          "An agentic workflow, because it sequences two distinct capabilities",
+          "A standalone NASK skill that does both steps in one single prompt",
+          "A flow only, because sequencing cannot involve AI agents at all"
+        ],
+        correct: 1,
+        explanation: "'Do X THEN do Y' with distinct capabilities is the signature of a multi-agent workflow. A triage agent and a resolution agent, coordinated by the orchestrator, fit this perfectly."
+      }
+    ];
+    initQuiz('quiz17', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0017";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+/* Shared Stylesheet for ServiceNow AI Agent Learning */
+
+:root {
+  --primary-color: #00A1E0; /* ServiceNow blue */
+  --secondary-color: #5A6268;
+  --success-color: #28A745;
+  --warning-color: #FFC107;
+  --danger-color: #DC3545;
+  --background: #FFFFFF;
+  --code-bg: #F5F5F5;
+  --border-color: #DEE2E6;
+  --text-primary: #212529;
+  --text-secondary: #6C757D;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--background);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  border-bottom: 3px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--secondary-color);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.lesson-meta {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.objective {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+.objective h2 {
+  color: white;
+  margin-top: 0;
+  font-size: 1.3rem;
+}
+
+.objective p {
+  margin-bottom: 0;
+  font-size: 1.05rem;
+}
+
+.key-concept {
+  background: #FFF9E6;
+  border-left: 4px solid var(--warning-color);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.key-concept strong {
+  color: var(--warning-color);
+  font-weight: 600;
+}
+
+.note {
+  background: #E7F3FF;
+  border-left: 4px solid var(--primary-color);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.warning {
+  background: #FFF3CD;
+  border-left: 4px solid var(--warning-color);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.success {
+  background: #D4EDDA;
+  border-left: 4px solid var(--success-color);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+code {
+  background: var(--code-bg);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.95em;
+  color: #E83E8C;
+}
+
+pre {
+  background: var(--code-bg);
+  padding: 1.25rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-color);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+ul, ol {
+  margin: 1rem 0 1rem 2rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom 0.2s;
+}
+
+a:hover {
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.resource-link {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.resource-link:hover {
+  background: #0081B8;
+  border-bottom: none;
+}
+
+.diagram {
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.architecture-box {
+  display: inline-block;
+  background: var(--code-bg);
+  border: 2px solid var(--primary-color);
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  margin: 0.5rem;
+  min-width: 150px;
+}
+
+.architecture-arrow {
+  font-size: 2rem;
+  color: var(--secondary-color);
+  margin: 0 1rem;
+}
+
+.practice-section {
+  background: #F8F9FA;
+  border: 2px solid var(--success-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.practice-section h2 {
+  color: var(--success-color);
+  margin-top: 0;
+}
+
+.quiz {
+  background: white;
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quiz-question {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+}
+
+.quiz-option {
+  background: var(--code-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quiz-option:hover {
+  border-color: var(--primary-color);
+  background: white;
+}
+
+.quiz-option.selected {
+  border-color: var(--primary-color);
+  background: #E7F3FF;
+}
+
+.quiz-option.correct {
+  border-color: var(--success-color);
+  background: #D4EDDA;
+}
+
+.quiz-option.incorrect {
+  border-color: var(--danger-color);
+  background: #F8D7DA;
+}
+
+.feedback {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 6px;
+  display: none;
+}
+
+.feedback.show {
+  display: block;
+}
+
+.feedback.correct {
+  background: #D4EDDA;
+  color: #155724;
+  border: 1px solid var(--success-color);
+}
+
+.feedback.incorrect {
+  background: #F8D7DA;
+  color: #721C24;
+  border: 1px solid var(--danger-color);
+}
+
+.next-steps {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 3rem 0 2rem 0;
+}
+
+.next-steps h2 {
+  color: white;
+  margin-top: 0;
+}
+
+.next-steps a {
+  color: #FFE082;
+  border-bottom-color: #FFE082;
+}
+
+.teacher-note {
+  background: #F3E5F5;
+  border-left: 4px solid #9C27B0;
+  padding: 1.25rem;
+  margin: 2rem 0;
+  border-radius: 4px;
+  font-style: italic;
+}
+
+@media print {
+  body {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .quiz, .practice-section {
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reference: ServiceNow AI Agent Glossary</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+  <style>
+    .glossary-term {
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+    }
+    .glossary-term dt {
+      font-weight: 700;
+      color: var(--primary-color);
+      font-size: 1.15rem;
+      margin-bottom: 0.35rem;
+    }
+    .glossary-term dd {
+      margin: 0;
+      font-size: 1.02rem;
+    }
+    .term-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    .tag-object { background: #E7F3FF; color: #0081B8; }
+    .tag-legacy { background: #FFF3CD; color: #856404; }
+    .tag-role { background: #E6F4EA; color: #1E7E34; }
+    .tag-table { background: #F3E5F5; color: #7B1FA2; }
+    .letter-nav {
+      position: sticky; top: 0; background: white;
+      padding: 0.75rem 0; border-bottom: 2px solid var(--primary-color);
+      margin-bottom: 1rem; z-index: 5;
+    }
+    .letter-nav a {
+      display: inline-block; padding: 0.2rem 0.5rem; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>ServiceNow AI Agent Glossary</h1>
+  <div class="lesson-meta">
+    <strong>Reference Document</strong> · The canonical vocabulary for this course. Every lesson uses these terms exactly as defined here.
+  </div>
+
+  <div class="note">
+    <strong>Why a glossary matters:</strong> ServiceNow's AI Agent terminology has shifted between releases (Xanadu → Yokohama → Zurich). This glossary uses <strong>current (Zurich)</strong> terms and flags legacy names so you're never confused by older documentation.
+  </div>
+
+  <dl>
+    <div class="glossary-term" id="agentic-workflow">
+      <dt>Agentic Workflow <span class="term-tag tag-object">Object</span></dt>
+      <dd>The top-level container that coordinates <em>multiple AI Agents</em> toward a larger goal. Stored in the <code>sn_aia_usecase</code> table. Formerly called a <strong>Use Case</strong>. Nesting model: Tools → AI Agents → Agentic Workflows.</dd>
+    </div>
+
+    <div class="glossary-term" id="ai-agent">
+      <dt>AI Agent <span class="term-tag tag-object">Object</span></dt>
+      <dd>An autonomous system that reasons over a goal and calls one or more <a href="#tool">Tools</a> to accomplish it. Defined by four mandatory fields: <code>name</code>, <code>description</code>, <code>agentRole</code>, and <code>securityAcl</code>. Stored in the <code>sn_aia_agent</code> table.</dd>
+    </div>
+
+    <div class="glossary-term" id="ai-agent-studio">
+      <dt>AI Agent Studio <span class="term-tag tag-object">Object</span></dt>
+      <dd>The no-code/low-code workspace where you create, configure, test, and deploy AI Agents and Agentic Workflows. Access: <strong>All &gt; AI Agent Studio</strong>. Requires the <code>sn_aia.admin</code> role.</dd>
+    </div>
+
+    <div class="glossary-term" id="ai-control-tower">
+      <dt>AI Control Tower</dt>
+      <dd>The centralized command center (expanded in Zurich) to discover, govern, secure, observe, and measure all AI agents, models, and workflows across the instance. AI assets are tracked in the CMDB. Best practice: always deploy agents under Control Tower governance.</dd>
+    </div>
+
+    <div class="glossary-term" id="agent-role">
+      <dt>agentRole <span class="term-tag tag-object">Field</span></dt>
+      <dd>The agent's <em>identity</em> field — answers "Who am I?" One of the three instruction fields, distinct from <a href="#description">description</a> (scope) and <a href="#instructions">instructions</a> (behavior).</dd>
+    </div>
+
+    <div class="glossary-term" id="autonomous">
+      <dt>Autonomous (execution mode)</dt>
+      <dd>A tool setting where the agent runs the tool on its own without asking the user first. SDK value: <code>autopilot</code>. Contrast with <a href="#supervised">Supervised</a>. Set per tool.</dd>
+    </div>
+
+    <div class="glossary-term" id="channel">
+      <dt>Channel</dt>
+      <dd>Where a deployed agent is available to users: the Now Assist / <a href="#otto-panel">Otto Panel</a>, Virtual Agent, record Analysis Panel, Microsoft Teams, Slack, SMS, email, or web chat.</dd>
+    </div>
+
+    <div class="glossary-term" id="description">
+      <dt>description <span class="term-tag tag-object">Field</span></dt>
+      <dd>The agent's <em>scope</em> field — answers "What problem does this agent solve?" Distinct from <a href="#agent-role">agentRole</a> (identity) and <a href="#instructions">instructions</a> (behavior).</dd>
+    </div>
+
+    <div class="glossary-term" id="instructions">
+      <dt>instructions <span class="term-tag tag-object">Field</span></dt>
+      <dd>The agent's <em>behavior</em> field — answers "How should I act, and when should I use each tool?" Should be assertive, unambiguous, and updated every time a tool is added. Can encode approval gates (e.g., "NEVER modify without user approval").</dd>
+    </div>
+
+    <div class="glossary-term" id="nask">
+      <dt>Now Assist Skill Kit (NASK)</dt>
+      <dd>The toolset (shipped in Xanadu) for building custom generative AI <a href="#skill">Skills</a>. Requires the <code>sn_skill_builder.admin</code> role. <strong>Not available on PDIs.</strong> Access: <strong>All &gt; Now Assist Skill Kit</strong>.</dd>
+    </div>
+
+    <div class="glossary-term" id="now-llm">
+      <dt>Now LLM Service</dt>
+      <dd>ServiceNow's managed large language model service that can power agents and skills. Agents can also use external models via <a href="#byok">BYOK/BYOLLM</a>.</dd>
+    </div>
+
+    <div class="glossary-term" id="byok">
+      <dt>BYOK / BYOLLM</dt>
+      <dd>"Bring Your Own Key / LLM" — a generic connector to use external LLMs (AWS, Azure, Google, IBM, OpenAI, etc.) instead of, or alongside, the Now LLM Service.</dd>
+    </div>
+
+    <div class="glossary-term" id="orchestrator">
+      <dt>AI Agent Orchestrator</dt>
+      <dd>The LLM-driven reasoning layer that plans, sequences, and routes tasks across agents and tools — described by ServiceNow as a "digital manager." Reads tool <em>names and descriptions</em> to decide which to call.</dd>
+    </div>
+
+    <div class="glossary-term" id="otto-panel">
+      <dt>Otto Panel <span class="term-tag tag-legacy">Renamed</span></dt>
+      <dd>The in-product side panel where users converse with agents. Called the <strong>Now Assist Panel</strong> before Zurich; being rebranded <strong>ServiceNow Otto Panel</strong>.</dd>
+    </div>
+
+    <div class="glossary-term" id="react">
+      <dt>ReAct Loop (Thought → Action → Observation)</dt>
+      <dd>The reasoning pattern an agent follows: it forms a <em>Thought</em> about what to do, takes an <em>Action</em> (calls a tool), observes the result (<em>Observation</em>), and repeats until the goal is met. Visible in the test panel's chain-of-thought view.</dd>
+    </div>
+
+    <div class="glossary-term" id="skill">
+      <dt>Skill (Now Assist Skill)</dt>
+      <dd>A single prompt-driven generative capability built in <a href="#nask">NASK</a>. Sends a configured prompt (plus optional inputs and grounding data) to an LLM and returns output. A published+activated skill can be attached to an agent as a "Now Assist skill" <a href="#tool">Tool</a>. Skills are building blocks; agents orchestrate them.</dd>
+    </div>
+
+    <div class="glossary-term" id="supervised">
+      <dt>Supervised (execution mode)</dt>
+      <dd>A tool setting where the agent asks the user to approve before running the tool. SDK value: <code>copilot</code>. Contrast with <a href="#autonomous">Autonomous</a>. Set per tool.</dd>
+    </div>
+
+    <div class="glossary-term" id="tool">
+      <dt>Tool <span class="term-tag tag-object">Object</span></dt>
+      <dd>A capability an agent can invoke. Types include: Record operation (CRUD), Script, Subflow, Flow action, Now Assist skill, Search retrieval (RAG), Catalog item, Conversational topic, Desktop action, File upload, Knowledge Graph, Web search, and MCP. The tool's name and description tell the orchestrator when and how to use it.</dd>
+    </div>
+
+    <div class="glossary-term" id="trigger">
+      <dt>Trigger <span class="term-tag tag-object">Object</span></dt>
+      <dd>What launches an agent or workflow: a record event (create/update), inbound email, or a schedule — or none (invoked on-demand via the Otto Panel). <strong>Triggers deploy inactive and must be manually activated after testing.</strong></dd>
+    </div>
+
+    <div class="glossary-term" id="use-case">
+      <dt>Use Case <span class="term-tag tag-legacy">Legacy</span></dt>
+      <dd>The old name for what is now called an <a href="#agentic-workflow">Agentic Workflow</a>. You'll still see "Use Case" in older documentation and in the table name <code>sn_aia_usecase</code>.</dd>
+    </div>
+  </dl>
+
+  <h2>Key Tables</h2>
+  <ul>
+    <li><code>sn_aia_agent</code> <span class="term-tag tag-table">Table</span> — stores AI Agents</li>
+    <li><code>sn_aia_usecase</code> <span class="term-tag tag-table">Table</span> — stores Agentic Workflows (legacy: Use Cases)</li>
+  </ul>
+
+  <h2>Key Roles</h2>
+  <ul>
+    <li><code>sn_aia.admin</code> <span class="term-tag tag-role">Role</span> — administer AI Agent Studio</li>
+    <li><code>sn_skill_builder.admin</code> <span class="term-tag tag-role">Role</span> — build skills in NASK</li>
+    <li><code>sn_skill_builder.viewer</code> <span class="term-tag tag-role">Role</span> — view NASK skills</li>
+  </ul>
+
+  <div class="teacher-note">
+    <strong>💡 This glossary grows with the course.</strong> As new terms appear in lessons, they're added here. When in doubt about a term, return to this page.
+  </div>
+  </div>
+
+  <script src="../assets/course-data.js"></script>
+  <script>
+    const NAV_SECTION = "reference";
+    const CURRENT_REF_FILE = "glossary.html";
+  </script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

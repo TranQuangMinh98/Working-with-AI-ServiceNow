@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3: How AI Agents Work (Architecture)</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 3: How AI Agents Work</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Lesson 2
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Understand the request-processing flow inside a ServiceNow AI agent — how the <strong>orchestrator</strong>, the <strong>LLM</strong>, and the <strong>ReAct loop</strong> turn a plain-language request into real actions.</p>
+  </div>
+
+  <h2>The Journey of a Request</h2>
+  <p>Here's what happens, end to end, when a user talks to an agent:</p>
+
+  <div class="diagram">
+    <div class="architecture-box">1. Request<br><small>"reset my VPN"</small></div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:var(--primary-color);">2. Orchestrator<br><small>plans</small></div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:#9C27B0;">3. ReAct loop<br><small>reason + act</small></div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:var(--success-color);">4. Result</div>
+  </div>
+
+  <h2>1. The Orchestrator: the "Digital Manager"</h2>
+  <p>When a request arrives, the <strong>AI Agent Orchestrator</strong> takes charge. It's the LLM-driven layer that reads the agent's instructions and available tools, then plans how to satisfy the request — deciding which tools to call, in what order, and (in a workflow) which agents to involve.</p>
+
+  <h2>2. The LLM: the Reasoning Engine</h2>
+  <p>Underneath, a large language model does the actual reasoning. ServiceNow can use:</p>
+  <ul>
+    <li><strong>Now LLM Service</strong> — ServiceNow's own managed models</li>
+    <li><strong>External LLMs via BYOK/BYOLLM</strong> — OpenAI, Azure, Google, AWS, IBM, and more, through a generic connector</li>
+  </ul>
+  <p>The model interprets language, decides what to do, and generates responses. It does <em>not</em> touch your data directly — it acts only through tools, which is what keeps it governable.</p>
+
+  <h2>3. The ReAct Loop: Reason, then Act</h2>
+  <div class="key-concept">
+    Agents reason using a <strong>ReAct</strong> pattern — <strong>Thought → Action → Observation</strong>, repeated until the goal is met:
+    <ul style="margin-top:0.75rem;">
+      <li><strong>Thought</strong> — "The user wants VPN access reset. First I should verify who they are."</li>
+      <li><strong>Action</strong> — calls the identity-lookup tool</li>
+      <li><strong>Observation</strong> — reads the result, then thinks again</li>
+    </ul>
+    You can watch this whole loop play out in the test panel (Lesson 15).
+  </div>
+
+  <h2>4. Tools Are the Only Way to Act</h2>
+  <p>Crucially, the LLM can only affect ServiceNow <em>through tools</em>. It can't secretly edit records. Every action flows through a defined tool, each governed by ACLs and an execution mode (supervised/autonomous). This is the architectural foundation of agent safety.</p>
+
+  <div class="note">
+    <strong>Why this design matters:</strong> Separating "reasoning" (the LLM) from "acting" (tools with ACLs) means you get AI flexibility <em>and</em> enterprise control. The agent is only ever as powerful — and as safe — as the tools and permissions you give it.
+  </div>
+
+  <h2>Putting It Together</h2>
+  <p>Request → Orchestrator plans → LLM reasons in a ReAct loop → each Action calls a governed Tool → results return to the user. Multiply this across several coordinated agents and you have an <em>agentic workflow</em> (Unit 6).</p>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz3" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" class="resource-link" target="_blank">📚 Fluent SDK — Building AI Agents Guide</a>
+
+  <div class="teacher-note">
+    <strong>💡 Want to trace a real example?</strong> Give me a request and I'll walk you through the exact Thought → Action → Observation steps an agent would take.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What is the role of the AI Agent Orchestrator?",
+        options: [
+          "It stores every record the agent has ever read or written down",
+          "It plans the request, deciding which tools and agents to involve",
+          "It is the external LLM provider that hosts the reasoning model",
+          "It is the channel surface where users type their requests into chat"
+        ],
+        correct: 1,
+        explanation: "The orchestrator is the LLM-driven 'digital manager' that reads instructions and tools, then plans how to satisfy the request — which tools to call, in what order, and which agents to involve."
+      },
+      {
+        question: "How can the LLM actually change data in ServiceNow?",
+        options: [
+          "Directly, by editing any record its reasoning decides to change",
+          "Only through tools, each governed by ACLs and an execution mode",
+          "By writing SQL statements straight against the instance database",
+          "It cannot change data at all; agents are strictly read-only always"
+        ],
+        correct: 1,
+        explanation: "The LLM can only act through tools — it never touches data directly. Each tool is governed by ACLs and a supervised/autonomous mode. This separation is the foundation of agent safety."
+      },
+      {
+        question: "The ReAct loop repeats which three steps?",
+        options: [
+          "Request, Route, Resolve — the lifecycle of an incident record",
+          "Thought, Action, Observation — reason, call a tool, read result",
+          "Plan, Approve, Deploy — the governance path before go-live",
+          "Read, Write, Delete — the CRUD operations a tool can perform"
+        ],
+        correct: 1,
+        explanation: "ReAct = Thought → Action → Observation, repeated until the goal is met. The agent thinks, acts via a tool, observes the outcome, and thinks again."
+      },
+      {
+        question: "Which two LLM options can power ServiceNow agents?",
+        options: [
+          "Only the Now LLM Service; external models are never permitted",
+          "Now LLM Service, and external LLMs via BYOK/BYOLLM connectors",
+          "Only external models; ServiceNow provides no managed LLM at all",
+          "A local model installed directly onto each administrator's laptop"
+        ],
+        correct: 1,
+        explanation: "Agents can use ServiceNow's managed Now LLM Service or bring an external LLM (OpenAI, Azure, Google, AWS, IBM, etc.) via the BYOK/BYOLLM generic connector."
+      }
+    ];
+    initQuiz('quiz3', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0003";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

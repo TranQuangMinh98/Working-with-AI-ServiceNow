@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 9: Anatomy of an Agent</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 9: Anatomy of an Agent</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 12 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Unit 3
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Learn the anatomy of every AI agent: its four mandatory fields and — most importantly — the three <strong>identity fields</strong> that separate <em>scope</em>, <em>identity</em>, and <em>behavior</em>.</p>
+  </div>
+
+  <h2>Four Mandatory Fields</h2>
+  <p>Every agent (stored in the <code>sn_aia_agent</code> table) requires four fields:</p>
+  <ul>
+    <li><code>name</code> — a clear, specific label</li>
+    <li><code>description</code> — its <strong>scope</strong></li>
+    <li><code>agentRole</code> — its <strong>identity</strong></li>
+    <li><code>securityAcl</code> — its access controls</li>
+  </ul>
+
+  <h2>The Three Identity Fields — Keep Them Separate</h2>
+  <p>This is the single most useful mental model for building good agents. Three fields answer three different questions <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" target="_blank">(Fluent SDK)</a>:</p>
+
+  <div class="diagram">
+    <div class="architecture-box" style="border-color:var(--primary-color);">
+      <strong>description</strong><br><small>"What problem<br>do I solve?"</small><br>= SCOPE
+    </div>
+    <div class="architecture-box" style="border-color:#9C27B0;">
+      <strong>agentRole</strong><br><small>"Who<br>am I?"</small><br>= IDENTITY
+    </div>
+    <div class="architecture-box" style="border-color:var(--success-color);">
+      <strong>instructions</strong><br><small>"How should<br>I act?"</small><br>= BEHAVIOR
+    </div>
+  </div>
+
+  <div class="key-concept">
+    <strong>Why separate them?</strong> Mixing scope, identity, and behavior into one blob confuses the reasoning engine. Clean separation makes the agent predictable and easy to debug. When output is wrong, you know which field to fix.
+  </div>
+
+  <h3>A Worked Example: "IT Password Helper"</h3>
+  <pre><code>name:        IT Password Helper
+
+description: Helps employees regain access to
+             accounts by resetting passwords and
+             unlocking accounts. (SCOPE)
+
+agentRole:   You are a friendly IT support
+             specialist focused on account access.
+             (IDENTITY)
+
+instructions: 1. Verify the user's identity first.
+              2. Confirm which account is affected.
+              3. Use the reset-password tool only
+                 after identity is confirmed.
+              4. NEVER reset without confirmation.
+              (BEHAVIOR)</code></pre>
+
+  <h2>What Else an Agent Has</h2>
+  <ul>
+    <li><strong>Tools</strong> — its capabilities (Unit 5)</li>
+    <li><strong>Trigger</strong> — what launches it (or none)</li>
+    <li><strong>Channels</strong> — where users reach it</li>
+    <li><strong>Security controls</strong> — ACLs, run-as identity, role masking</li>
+  </ul>
+
+  <div class="success">
+    <strong>Design principle:</strong> Keep each agent focused on <strong>one capability</strong>. If it starts needing more than ~5 tools or juggling unrelated jobs, that's your signal to split it into multiple agents (Unit 6).
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz9" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" class="resource-link" target="_blank">📚 Fluent SDK — Building AI Agents Guide</a>
+
+  <div class="teacher-note">
+    <strong>💡 Try it:</strong> Pick a task you'd want an agent to do and draft its three identity fields. Paste them to me and I'll give you feedback.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "Which question does the 'description' field answer?",
+        options: [
+          "Who am I? — the persona and identity the agent should adopt",
+          "What problem do I solve? — the scope of the agent's purpose",
+          "How should I act? — the step-by-step behavior and tool usage",
+          "Where do I run? — the channels the agent is deployed across"
+        ],
+        correct: 1,
+        explanation: "description = scope ('What problem do I solve?'). agentRole = identity ('Who am I?'). instructions = behavior ('How should I act?')."
+      },
+      {
+        question: "Why keep scope, identity, and behavior in separate fields?",
+        options: [
+          "ServiceNow charges a separate license fee for each merged field",
+          "Clean separation makes the agent predictable and easy to debug",
+          "The reasoning engine ignores any field longer than one sentence",
+          "It is a legacy requirement left over from the Use Case model"
+        ],
+        correct: 1,
+        explanation: "Separating the three concerns keeps the agent predictable and debuggable — when output is wrong, you know exactly which field to adjust. Mixing them confuses the reasoning engine."
+      },
+      {
+        question: "Which four fields are mandatory for every AI agent?",
+        options: [
+          "name, trigger, channel, and the securityAcl access control field",
+          "name, description, agentRole, and the securityAcl access control",
+          "description, instructions, tools, and the parent agentic workflow",
+          "name, agentRole, trigger, and at least one attached working tool"
+        ],
+        correct: 1,
+        explanation: "The four mandatory fields are name, description, agentRole, and securityAcl. Tools, triggers, and channels are important but not part of the mandatory core."
+      },
+      {
+        question: "An agent is starting to need 7 unrelated tools. What does this signal?",
+        options: [
+          "It is working well; more tools always make an agent more capable",
+          "Time to split it into multiple focused agents in a workflow",
+          "You must upgrade the instance license to raise the tool limit",
+          "The agentRole field should be rewritten to list all seven tools"
+        ],
+        correct: 1,
+        explanation: "One capability per agent is the design principle. Exceeding ~5 tools or juggling unrelated jobs is the signal to split into multiple agents coordinated by an agentic workflow."
+      }
+    ];
+    initQuiz('quiz9', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0009";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

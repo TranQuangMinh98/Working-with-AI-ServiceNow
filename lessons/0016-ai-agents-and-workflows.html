@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 17: AI Agents + Flow/Workflow Studio</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 17: AI Agents + Flow / Workflow Studio</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15 minutes | <strong>Level:</strong> Intermediate | <strong>Prerequisites:</strong> Unit 5
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>See how AI Agents and traditional ServiceNow flows work together — agents calling flows as tools, and flows calling generative skills — so you can combine deterministic automation with AI reasoning.</p>
+  </div>
+
+  <h2>Two Worlds, Better Together</h2>
+  <p>ServiceNow has two complementary automation styles. The magic is combining them:</p>
+
+  <div class="diagram">
+    <div style="display:inline-block; vertical-align:top; margin:1rem; max-width:280px;">
+      <div class="architecture-box" style="border-color:var(--secondary-color);">
+        <strong>Flows</strong><br><small>deterministic</small>
+      </div>
+      <p style="font-size:0.9rem; margin-top:0.75rem;">Reliable, repeatable, rule-based. Same input → same output, every time.</p>
+    </div>
+    <div style="display:inline-block; vertical-align:top; margin:1rem; max-width:280px;">
+      <div class="architecture-box" style="border-color:#9C27B0;">
+        <strong>AI Agents</strong><br><small>reasoning</small>
+      </div>
+      <p style="font-size:0.9rem; margin-top:0.75rem;">Flexible, adaptive, understands natural language. Handles the unexpected.</p>
+    </div>
+  </div>
+
+  <h2>Direction 1: Agents Call Flows</h2>
+  <p>Any subflow or flow action built in <strong>Workflow Studio</strong> can be wrapped as a <strong>tool</strong> that an agent calls. This lets an agent hand off well-defined, multi-step work to reliable automation.</p>
+
+  <div class="key-concept">
+    <strong>The String rule (again):</strong> A subflow/flow action used as a tool must have <strong>String inputs and outputs</strong>. If your flow uses other types, the orchestrator can't pass data to it. Wrap or convert values to String at the flow boundary.
+  </div>
+
+  <p><em>Example:</em> An agent understands "onboard my new hire Jai starting Monday," extracts the details through conversation, then calls a deterministic <code>Employee Onboarding</code> subflow that provisions accounts, orders a laptop, and books training — reliably, every time.</p>
+
+  <h2>Direction 2: Flows Call Skills</h2>
+  <p>The reverse also works. A NASK skill can be deployed as a <strong>Flow Action</strong>, so a traditional flow can invoke generative AI mid-process. The skill's output comes back as JSON:</p>
+
+  <pre><code>// Parsing a skill's output inside a flow script step
+var result = JSON.parse(
+  fd_data._1__execute_skill.output.response
+).model_output;</code></pre>
+
+  <p><em>Example:</em> A flow triggered on new incidents calls a "summarize incident" skill, writes the summary to a field, then continues with normal routing logic.</p>
+
+  <div class="note">
+    <strong>How to choose the direction:</strong> If the <em>entry point</em> is a conversation or an ambiguous request → lead with an <strong>agent</strong> that calls flows. If the entry point is a structured, record-triggered process that just needs a spot of AI → lead with a <strong>flow</strong> that calls a skill.
+  </div>
+
+  <div class="warning">
+    <strong>⚠ Integration Hub note:</strong> Integration Hub spokes can also be surfaced as agent tools, letting agents reach external systems. Remember these still run under the agent's security context.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz16" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/now-assist-articles/ai-agent-tools-getting-the-most-out-of-your-agentic-workflows/ta-p/3227648" class="resource-link" target="_blank">📚 AI Agent Tools &amp; Agentic Workflows</a>
+
+  <div class="teacher-note">
+    <strong>💡 Designing a real process?</strong> Tell me the entry point and I'll help you decide whether to lead with an agent or a flow.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "How does an AI agent make use of a subflow built in Workflow Studio?",
+        options: [
+          "It rewrites the subflow into JavaScript and runs it as a script tool",
+          "It wraps the subflow as a tool with String inputs and outputs to call",
+          "It cannot; agents and flows run in completely separate isolated systems",
+          "It copies the flow steps directly into the agent's instructions field"
+        ],
+        correct: 1,
+        explanation: "A subflow or flow action is wrapped as a tool the agent can call. Its inputs and outputs must be String type so the orchestrator can pass data across the boundary."
+      },
+      {
+        question: "Can a traditional flow invoke a generative NASK skill?",
+        options: [
+          "No, skills can only ever be called by an AI agent orchestrator",
+          "Yes, a skill can be deployed as a Flow Action and called from a flow",
+          "Yes, but only if the flow is first converted into an agentic workflow",
+          "No, flows are deterministic and cannot touch any generative feature"
+        ],
+        correct: 1,
+        explanation: "Skills can be deployed as Flow Actions, letting a deterministic flow call generative AI mid-process. The skill's output returns as JSON that the flow parses."
+      },
+      {
+        question: "The entry point is a conversational, ambiguous user request. Lead with…",
+        options: [
+          "A flow, because flows are always more reliable than any agent",
+          "An agent that calls flows, since the entry needs flexible reasoning",
+          "Neither; conversational requests must be handled by humans only",
+          "A script tool alone, bypassing both flows and agents entirely"
+        ],
+        correct: 1,
+        explanation: "When the entry point is conversational or ambiguous, lead with an agent (for reasoning) that hands off well-defined steps to flows (for reliability). Match the lead component to the entry point."
+      },
+      {
+        question: "Why combine deterministic flows with reasoning agents at all?",
+        options: [
+          "To replace flows entirely, since agents are strictly more capable",
+          "To pair reliable repeatable automation with flexible adaptive reasoning",
+          "Because agents cannot function without a flow wrapping every action",
+          "To reduce licensing costs by avoiding the Now Assist entitlement"
+        ],
+        correct: 1,
+        explanation: "Flows give you deterministic reliability; agents give you adaptive reasoning and natural-language understanding. Combining them lets each handle what it does best."
+      }
+    ];
+    initQuiz('quiz16', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0016";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

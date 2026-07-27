@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 20: Capstone Project</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 20: Capstone Project</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 45-60 minutes | <strong>Level:</strong> Culminating | <strong>Prerequisites:</strong> Units 1-6
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Put everything together. You'll design and build a complete, multi-tool agent — from concept to a governed deployment — applying every skill from this course.</p>
+  </div>
+
+  <h2>The Brief: An "Employee IT Helper" Agent</h2>
+  <p>Build an agent that helps employees with common IT requests: checking their open incidents, creating a new incident, and adding a note to an existing one. It's realistic, uses multiple tools, and exercises supervised vs. autonomous modes.</p>
+
+  <div class="note">
+    <strong>No entitled instance?</strong> Complete this as a <strong>design document</strong> — write out every field, tool, and decision. Designing well is 80% of the skill. Paste your design to me for review.
+  </div>
+
+  <h2>Your Checklist</h2>
+
+  <h3>✅ Part 1 — Design (apply Units 1, 4)</h3>
+  <ul>
+    <li>Write the three identity fields: <code>description</code> (scope), <code>agentRole</code> (identity), <code>instructions</code> (behavior)</li>
+    <li>Confirm this is <em>one capability</em> — should it be one agent or a workflow? Justify your choice (Lesson 17)</li>
+  </ul>
+
+  <h3>✅ Part 2 — Tools (apply Unit 5)</h3>
+  <ul>
+    <li><strong>Tool A:</strong> Record operation (Lookup) — find the user's open incidents. Mode: <strong>Autonomous</strong> (read)</li>
+    <li><strong>Tool B:</strong> Record operation (Create) — create a new incident. Mode: <strong>Supervised</strong> (write)</li>
+    <li><strong>Tool C:</strong> Script tool — add a work note (journal field needs a script; use <code>GlideRecordSecure</code>). Mode: <strong>Supervised</strong></li>
+    <li>Write a sharp name + description for each tool</li>
+    <li>Update instructions to say <em>when</em> to use each tool, with an approval gate on writes</li>
+  </ul>
+
+  <h3>✅ Part 3 — Test (apply Lesson 15)</h3>
+  <ul>
+    <li>Test bare (no tools) — does reasoning hold?</li>
+    <li>Add tools one at a time, re-testing after each</li>
+    <li>Run the same scenario 3+ times — is behavior consistent?</li>
+    <li>Read the chain of thought (ReAct loop) and confirm sensible Thought → Action → Observation steps</li>
+  </ul>
+
+  <h3>✅ Part 4 — Deploy &amp; Govern (apply Lesson 18)</h3>
+  <ul>
+    <li>Set least-privilege ACLs</li>
+    <li>Choose a channel; start with a small audience</li>
+    <li>Add a trigger if needed — remember to <strong>activate</strong> it after testing</li>
+    <li>Confirm it's visible in the AI Control Tower</li>
+  </ul>
+
+  <h2>Success Criteria</h2>
+  <div class="success">
+    Your agent is done when it can: (1) understand a natural-language IT request, (2) look up incidents autonomously, (3) create/annotate incidents only <em>with user approval</em>, (4) behave consistently across repeated tests, and (5) run under Control Tower governance.
+  </div>
+
+  <h2>Stretch Goals</h2>
+  <ul>
+    <li>Add a NASK skill that drafts a friendly incident summary, and attach it as a tool (Lesson 14)</li>
+    <li>Split into a two-agent workflow: a "triage" agent and a "resolution" agent (Lesson 17)</li>
+    <li>Have the agent hand off to a subflow for a multi-step provisioning task (Lesson 16)</li>
+  </ul>
+
+  <div class="key-concept">
+    <strong>You've completed the course.</strong> You can now explain what agents are, set up the platform, build agents and tools, create custom skills, orchestrate multi-agent workflows, and deploy them safely. The next step is <em>wisdom</em> — build for real, and learn from a community.
+  </div>
+
+  <h2>Where to Go Next: Join a Community</h2>
+  <p>Real skill grows by testing your work against others. High-reputation places to ask questions and share:</p>
+  <a href="https://www.servicenow.com/community/" class="resource-link" target="_blank">💬 ServiceNow Community</a>
+  <a href="https://developer.servicenow.com/" class="resource-link" target="_blank">🛠️ ServiceNow Developer Program</a>
+
+  <div class="practice-section">
+    <h2>🎯 Final Knowledge Check</h2>
+    <div id="quiz19" class="quiz"></div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>💡 This is your project — I'm your reviewer.</strong> Share your design or your build results, and I'll give you concrete, actionable feedback. Ready when you are.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "In the capstone, why is the 'create incident' tool Supervised?",
+        options: [
+          "Because create operations are slower and need a manual trigger",
+          "Because it is a write action, so a human should approve it first",
+          "Because record creation cannot run autonomously in ServiceNow",
+          "Because supervised tools consume fewer LLM tokens than autonomous"
+        ],
+        correct: 1,
+        explanation: "Create is a write operation. Writes should be supervised so a human approves before the agent changes data — reads (lookups) can safely be autonomous."
+      },
+      {
+        question: "Adding a work note requires which tool type, and why?",
+        options: [
+          "A Record operation, since CRUD writes to every field type equally",
+          "A Script tool, because journal fields cannot be written by CRUD",
+          "A Search retrieval tool, because notes are indexed for retrieval",
+          "A Web search tool, because notes are stored outside the instance"
+        ],
+        correct: 1,
+        explanation: "Journal fields (work_notes/comments) can't be written by a CRUD Record operation — you need a Script tool using GlideRecordSecure."
+      },
+      {
+        question: "What confirms your agent behaves reliably before go-live?",
+        options: [
+          "It worked correctly on a single successful manual test run",
+          "Running the same scenario several times with consistent results",
+          "The AI generated the agent draft, so it is correct by default",
+          "It has more than five tools attached, proving it is capable"
+        ],
+        correct: 1,
+        explanation: "Agents are non-deterministic, so consistency across multiple runs of the same scenario is the real proof. A single lucky pass isn't enough."
+      },
+      {
+        question: "After finishing the course, what builds true WISDOM?",
+        options: [
+          "Re-reading every lesson until each quiz scores a perfect result",
+          "Building for real and testing your skills within a community",
+          "Memorizing every plugin name and role in the entire glossary",
+          "Avoiding production until you have built fifty practice agents"
+        ],
+        correct: 1,
+        explanation: "Knowledge and skills come from lessons and practice; wisdom comes from real-world application and interacting with a community of practitioners. Go build, and share your work."
+      }
+    ];
+    initQuiz('quiz19', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0019";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

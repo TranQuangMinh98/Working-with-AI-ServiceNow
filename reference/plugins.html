@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reference: Plugins & Apps for ServiceNow AI Agents</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+  <style>
+    .plugin-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.97rem; }
+    .plugin-table th, .plugin-table td {
+      text-align: left; padding: 0.6rem 0.7rem; border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
+    }
+    .plugin-table th { background: var(--primary-color); color: #fff; font-size: 0.85rem;
+      text-transform: uppercase; letter-spacing: 0.03em; }
+    .plugin-table tr:nth-child(even) td { background: #F7FAFC; }
+    .plugin-table code { font-size: 0.88rem; }
+    .pill { display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.04em; padding: 0.12rem 0.5rem; border-radius: 10px; }
+    .pill-req { background: #FDE2E2; color: #B71C1C; }
+    .pill-opt { background: #E7F3FF; color: #0081B8; }
+    .pill-byok { background: #F3E5F5; color: #7B1FA2; }
+    .lesson-ref { font-size: 0.82rem; color: var(--text-muted, #667); }
+  </style>
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Plugins &amp; Apps You Need</h1>
+  <div class="lesson-meta">
+    <strong>Reference Document</strong> · Everything you install (or enable) to work through this course, mapped to the lessons that use it.
+  </div>
+
+  <div class="warning">
+    <strong>⚠ Always verify against your release notes.</strong> Store-app names, version numbers, and dependencies change every release. The names below are verified for the <strong>Yokohama → Zurich</strong> era (2025–2026). Confirm exact versions for <em>your</em> instance before installing. When in doubt, install the <strong>parent</strong> app and let its dependencies pull in automatically.
+  </div>
+
+  <div class="key-concept">
+    <strong>The three-layer mental model (from Lesson 4):</strong> <em>License / SKU</em> (permission to use Now Assist) → <em>Plugins &amp; store apps</em> (the AI Agents + Skill Kit software) → <em>Platform features</em> (AI Search + the panel that surfaces agents). All three layers must be in place before an agent will run.
+  </div>
+
+  <h2>1. Core Store Apps (Required)</h2>
+  <p>Install these from the <strong>ServiceNow Store</strong>. They are the software that makes AI Agents exist on your instance.</p>
+  <table class="plugin-table">
+    <thead><tr><th>App / Plugin</th><th>What it gives you</th><th>Used in</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Now Assist AI Agents</strong> <span class="pill pill-req">Required</span></td>
+        <td>The core AI Agents capability — AI Agent Studio, the <code>sn_aia_agent</code> / <code>sn_aia_usecase</code> tables, and the orchestrator.</td>
+        <td class="lesson-ref">Units 1–6 (everything)</td>
+      </tr>
+      <tr>
+        <td><strong>Now Assist for [product]</strong> <span class="pill pill-req">Required</span><br><span class="lesson-ref">e.g. Now Assist for ITSM / HRSD / CSM</span></td>
+        <td>Product-specific pre-built agents, skills, and the Now Assist Panel integration for that product. Pick the one matching your work.</td>
+        <td class="lesson-ref">Unit 3 (pre-built agents)</td>
+      </tr>
+      <tr>
+        <td><strong>Now Assist Admin (Console)</strong> <span class="pill pill-req">Required</span></td>
+        <td>Where you manage model providers per skill/skill-group/instance. <strong>Must be v6.6.4+</strong> or Studio throws "Security constraints prevent access".</td>
+        <td class="lesson-ref">Lessons 6, 15 (model provider)</td>
+      </tr>
+      <tr>
+        <td><strong>Now Assist Skill Kit (NASK)</strong> <span class="pill pill-req">Required for custom skills</span></td>
+        <td>Build custom generative-AI skills. Needs the <code>sn_skill_builder.admin</code> role. <strong>Not on PDIs.</strong></td>
+        <td class="lesson-ref">Lesson 14 (Skill Kit)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>2. Platform Features to Enable (Required)</h2>
+  <p>These ship with the platform — you don't install them from the Store, you turn them on.</p>
+  <table class="plugin-table">
+    <thead><tr><th>Feature</th><th>Why it's needed</th><th>Used in</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>AI Search</strong> <span class="pill pill-req">Required</span></td>
+        <td>Powers retrieval / RAG tools and agent grounding. Agents that look up knowledge won't work without it — a common cause of "No agents available".</td>
+        <td class="lesson-ref">Lessons 7, 12 (tools)</td>
+      </tr>
+      <tr>
+        <td><strong>Now Assist Panel / Otto Panel</strong> <span class="pill pill-req">Required</span></td>
+        <td>The in-product side panel where users actually talk to agents. If it's off, deployed agents have nowhere to appear.</td>
+        <td class="lesson-ref">Lessons 5, 18 (deploy)</td>
+      </tr>
+      <tr>
+        <td><strong>Flow Designer / Workflow Studio</strong> <span class="pill pill-opt">Bundled</span></td>
+        <td>Ships with the platform. Used to build subflows that agents call as tools, and to trigger agentic workflows.</td>
+        <td class="lesson-ref">Lesson 16 (workflows)</td>
+      </tr>
+      <tr>
+        <td><strong>Virtual Agent</strong> <span class="pill pill-opt">Optional</span></td>
+        <td>An additional channel to surface agents in a chat experience.</td>
+        <td class="lesson-ref">Lesson 18 (channels)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. BYOK / External Model Provider Stack (Optional)</h2>
+  <p>Only needed if you want to use an external LLM (Claude, GPT, Gemini) instead of the Now LLM Service — the subject of <strong>Lesson 15</strong>.</p>
+  <table class="plugin-table">
+    <thead><tr><th>App / Plugin</th><th>What it gives you</th><th>Used in</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Generative AI Controller</strong> <span class="pill pill-byok">BYOK</span></td>
+        <td>The connector layer for external LLMs (BYOK/BYOLLM). Keep it on the latest compatible version, or provider settings silently revert after an upgrade.</td>
+        <td class="lesson-ref">Lesson 15 (BYOK)</td>
+      </tr>
+      <tr>
+        <td><strong>Provider spoke</strong> <span class="pill pill-byok">BYOK</span><br><span class="lesson-ref">Amazon Bedrock / Azure OpenAI / Google Vertex</span></td>
+        <td>The integration to your chosen provider. Anthropic <strong>Claude</strong> is reached via the <strong>Amazon Bedrock</strong> spoke; <strong>GPT</strong> via Azure OpenAI; <strong>Gemini</strong> via Google.</td>
+        <td class="lesson-ref">Lesson 15 (BYOK)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <strong>Supported orchestration providers (Yokohama P6+ / Zurich P1+):</strong> Now LLM Service (default), Azure OpenAI (GPT‑4.1 / 4.1‑mini), Anthropic Claude (on AWS Bedrock), and Google Gemini 2.5. Provider support is set per <em>skill</em> — there is no per-agent orchestration override yet. See Lesson 15.
+  </div>
+
+  <h2>4. Health-Check Tool (Recommended)</h2>
+  <ul>
+    <li><strong>Now Assist Readiness Evaluation</strong> — a store app that scans your instance and tells you what's missing for AI Agents. Run it <em>before</em> you start building to catch license, plugin, and feature gaps early.</li>
+  </ul>
+
+  <div class="warning">
+    <strong>⚠ Licensing gate:</strong> AI Agents require an active <strong>Now Assist license</strong> at the <strong>Pro Plus</strong> or <strong>Enterprise Plus</strong> SKU — layered on your product (ITSM, CSM, HRSD…). No SKU, no agents, regardless of which plugins are installed.
+  </div>
+
+  <div class="teacher-note">
+    <strong>💡 Not sure what your instance already has?</strong> Tell me your release version and licensed products, and I'll help you work out exactly which of these are missing. This page pairs with the <a href="common-problems.html">Common Problems</a> reference and Lesson 4.
+  </div>
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>
+    const NAV_SECTION = "reference";
+    const CURRENT_REF_FILE = "plugins.html";
+  </script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

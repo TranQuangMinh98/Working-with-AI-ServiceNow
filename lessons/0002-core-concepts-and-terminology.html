@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2: Core Concepts & Terminology</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 2: Core Concepts &amp; Terminology</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 12-15 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Lesson 1
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Learn the four building blocks of ServiceNow AI Agents — <strong>Tools, AI Agents, Agentic Workflows, and Triggers</strong> — and how they nest together. This vocabulary is the foundation for everything you'll build.</p>
+  </div>
+
+  <h2>The Nesting Model</h2>
+
+  <p>ServiceNow AI Agents are built from a simple hierarchy. Once you see how the pieces nest, the whole platform makes sense:</p>
+
+  <div class="diagram">
+    <div class="architecture-box" style="border-color: var(--success-color);">
+      🔧 <strong>Tools</strong><br><small>individual capabilities</small>
+    </div>
+    <div class="architecture-arrow">↳ grouped into</div>
+    <div class="architecture-box" style="border-color: #9C27B0;">
+      🤖 <strong>AI Agents</strong><br><small>reason + call tools</small>
+    </div>
+    <div class="architecture-arrow">↳ coordinated by</div>
+    <div class="architecture-box" style="border-color: var(--primary-color);">
+      🔀 <strong>Agentic Workflows</strong><br><small>orchestrate agents</small>
+    </div>
+  </div>
+
+  <div class="key-concept">
+    <strong>Remember this sentence:</strong> "AI Agents can contain multiple Tools, and Agentic Workflows can contain multiple AI Agents." <a href="https://www.servicenow.com/community/developer-articles/agentic-ai-building-and-scaling-ai-agents-on-the-now-platform/ta-p/3423631" target="_blank">(ServiceNow, Building &amp; Scaling AI Agents)</a>
+  </div>
+
+  <h2>The Four Building Blocks</h2>
+
+  <h3>1. 🔧 Tool</h3>
+  <p>A single capability an agent can use — like looking up a record, running a script, or calling a flow. The tool's <strong>name and description</strong> are critical: the agent's reasoning engine reads them to decide when and how to use each tool. Tool types include Record operations (CRUD), Scripts, Subflows, and Now Assist skills. <em>(Full coverage in Unit 5.)</em></p>
+
+  <h3>2. 🤖 AI Agent</h3>
+  <p>An autonomous unit that's given a goal, then <em>reasons</em> about how to achieve it using its tools. Every agent has four required fields:</p>
+  <ul>
+    <li><code>name</code> — what it's called</li>
+    <li><code>description</code> — its <strong>scope</strong> ("What problem do I solve?")</li>
+    <li><code>agentRole</code> — its <strong>identity</strong> ("Who am I?")</li>
+    <li><code>securityAcl</code> — its access controls</li>
+  </ul>
+  <p class="note" style="margin-top:1rem;">Agents live in the <code>sn_aia_agent</code> table. <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" target="_blank">(Fluent SDK — Building AI Agents)</a></p>
+
+  <h3>3. 🔀 Agentic Workflow</h3>
+  <p>The top-level container that coordinates <em>multiple agents</em> toward a larger goal. Use one agent when tasks share a capability; use an agentic workflow when you need different capabilities working together (e.g., "fetch data THEN process it").</p>
+
+  <div class="warning">
+    <strong>⚠ Terminology alert:</strong> Older ServiceNow docs call this a <strong>"Use Case."</strong> The current (Zurich) term is <strong>"Agentic Workflow."</strong> The underlying table is still named <code>sn_aia_usecase</code>, so don't be thrown when you see the legacy name.
+  </div>
+
+  <h3>4. ⚡ Trigger</h3>
+  <p>What <em>launches</em> an agent or workflow. A trigger can be a record event (create/update), an inbound email, a schedule — or nothing at all (the user starts it on-demand from the Otto Panel). <strong>Important:</strong> triggers deploy <em>inactive</em> and must be manually turned on after testing.</p>
+
+  <h2>Two More Terms You'll See Everywhere</h2>
+  <p><strong>AI Agent Orchestrator</strong> — the LLM-powered "digital manager" that plans and routes work across agents and tools.</p>
+  <p><strong>Otto Panel</strong> — the side panel where users chat with agents (called the "Now Assist Panel" before the Zurich release).</p>
+
+  <div class="success">
+    <strong>📖 Keep the <a href="../reference/glossary.html" target="_blank">Glossary</a> handy.</strong> It defines every term in this course and flags legacy vs. current names. Bookmark it — you'll return to it often.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz2" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" class="resource-link" target="_blank">📚 Fluent SDK — Building AI Agents Guide</a>
+
+  <div class="teacher-note">
+    <strong>💡 Confused by a term?</strong> Ask me to explain any concept with a different example — that's what I'm here for.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What is the correct nesting order, from smallest to largest?",
+        options: [
+          "Agents contain Workflows, which contain the individual Tools",
+          "Tools grouped in Agents, and Agents grouped in Agentic Workflows",
+          "Workflows contain Tools, which are grouped into the AI Agents",
+          "Triggers contain Agents, which then contain all of the Tools"
+        ],
+        correct: 1,
+        explanation: "The nesting model is Tools → AI Agents → Agentic Workflows. Agents contain multiple tools; workflows coordinate multiple agents."
+      },
+      {
+        question: "Which term is the CURRENT (Zurich) name for a multi-agent container?",
+        options: [
+          "Use Case, which is stored in the sn_aia_agent data table",
+          "Orchestrator, the LLM layer that plans and routes the work",
+          "Agentic Workflow, the current name replacing the term Use Case",
+          "Otto Panel, the surface where all users chat with agents"
+        ],
+        correct: 2,
+        explanation: "'Agentic Workflow' is the current term. 'Use Case' is the legacy name — though the table is still called sn_aia_usecase."
+      },
+      {
+        question: "What do an AI agent's tool NAMES and DESCRIPTIONS actually do?",
+        options: [
+          "They set the security access controls that restrict tool usage",
+          "They tell the orchestrator when and how to call each tool",
+          "They define the trigger events that launch the parent workflow",
+          "They store the reasoning history for later debugging sessions"
+        ],
+        correct: 1,
+        explanation: "Tool names and descriptions are load-bearing: the reasoning engine reads them to decide whether and how to use each tool. Vague descriptions lead to poor tool selection."
+      },
+      {
+        question: "A trigger has just been deployed with a new agent. What must you remember?",
+        options: [
+          "Triggers deploy inactive and must be manually activated later",
+          "Triggers are always active immediately and cannot be turned off",
+          "Triggers require a separate Agentic Workflow to function at all",
+          "Triggers can only ever be an inbound email, nothing else works"
+        ],
+        correct: 0,
+        explanation: "Triggers deploy in an inactive state by design — a safety measure. You must manually activate them after testing confirms the agent behaves correctly."
+      }
+    ];
+    initQuiz('quiz2', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0002";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

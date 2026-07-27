@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 6: Roles & Governance Setup</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 6: Roles &amp; Governance Setup</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 12 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Lesson 5
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Assign the roles needed to build agents, and understand the governance guardrails that keep agents safe from day one.</p>
+  </div>
+
+  <h2>The Roles You Need</h2>
+  <table style="width:100%; border-collapse: collapse; margin: 1.5rem 0;">
+    <thead>
+      <tr style="background: var(--code-bg);">
+        <th style="text-align:left; padding:0.6rem; border:1px solid var(--border-color);">Role</th>
+        <th style="text-align:left; padding:0.6rem; border:1px solid var(--border-color);">Grants</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><code>sn_aia.admin</code></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Administer AI Agent Studio — create/manage agents and workflows.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><code>sn_skill_builder.admin</code></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Build custom skills in the Now Assist Skill Kit (Unit 5).</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);"><code>sn_skill_builder.viewer</code></td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">View (read-only) NASK skills.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>To assign a role:</strong> as an admin, open the target user record and add the role (e.g. <code>sn_aia.admin</code>), or add it via a group. Then have that user refresh — AI Agent Studio should now appear in their navigator.</p>
+
+  <div class="warning">
+    <strong>⚠ Least privilege:</strong> Grant building roles only to the people who design agents. End users who merely <em>talk</em> to agents don't need these admin roles — they interact through a channel like the Otto Panel.
+  </div>
+
+  <h2>Governance Guardrails (Know These Early)</h2>
+  <p>ServiceNow bakes safety into the platform. You'll use these throughout the course, but meet them now:</p>
+  <ul>
+    <li><strong>Deny-by-default ACL</strong> — agents can only access what you explicitly allow</li>
+    <li><strong>Run-as identity</strong> — an agent acts as a defined identity, bounded by that identity's permissions</li>
+    <li><strong>Role masking</strong> — restrict which roles/data the agent effectively sees</li>
+    <li><strong>Kill Switch</strong> — instantly stop a misbehaving agent</li>
+    <li><strong>Now Assist Guardian</strong> — monitors generative behavior</li>
+    <li><strong>AI Control Tower</strong> — central place to discover, govern, and observe all AI (Lesson 18)</li>
+  </ul>
+
+  <div class="key-concept">
+    <strong>Security mindset:</strong> An agent is only as powerful as the identity and tools you give it. Set up least-privilege access <em>before</em> building, not after. Governance isn't a final step — it's the frame you build inside from the start.
+  </div>
+
+  <div class="note">
+    <strong>Best practice from the field:</strong> Always deploy agents <em>under</em> the AI Control Tower rather than as unmanaged automation, so every agent is discoverable and governable. We'll do this hands-on in Lesson 18.
+  </div>
+
+  <div class="success">
+    <strong>You've finished Unit 2!</strong> Your instance is entitled, plugins installed, Studio accessible, roles assigned, and you know the guardrails. Next, Unit 3 explores what agents can do and tours the pre-built ones — then Unit 4 is your first build.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz6" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/grc-blog/servicenow-ai-control-tower-in-the-zurich-release-mastering-ai/ba-p/3365258" class="resource-link" target="_blank">📚 ServiceNow AI Control Tower (Zurich)</a>
+
+  <div class="teacher-note">
+    <strong>💡 Setting up a real instance?</strong> Tell me who needs to build versus who just uses agents, and I'll help you plan role assignments.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "Which role is needed to administer AI Agent Studio?",
+        options: [
+          "sn_skill_builder.admin, which also governs all agent creation",
+          "sn_aia.admin, which grants create/manage in AI Agent Studio",
+          "admin only; there is no dedicated role for AI Agent Studio",
+          "sn_skill_builder.viewer, the standard role for building agents"
+        ],
+        correct: 1,
+        explanation: "sn_aia.admin administers AI Agent Studio (create/manage agents and workflows). sn_skill_builder.admin is for building skills in NASK."
+      },
+      {
+        question: "Do end users who only chat with an agent need the admin roles?",
+        options: [
+          "Yes, every user must have sn_aia.admin to send any message",
+          "No, they interact through a channel and need no admin role",
+          "Yes, but only the read-only sn_skill_builder.viewer role suffices",
+          "No, but they must be granted run-as identity on each agent"
+        ],
+        correct: 1,
+        explanation: "Least privilege: only agent designers need the building roles. End users reach agents through a channel like the Otto Panel and don't need admin roles."
+      },
+      {
+        question: "Which guardrail lets you instantly stop a misbehaving agent?",
+        options: [
+          "Deny-by-default ACL, by revoking permissions one at a time",
+          "The Kill Switch, which immediately halts the agent's operation",
+          "Run-as identity, by logging the agent's identity out of session",
+          "Role masking, by gradually hiding data until the agent stops"
+        ],
+        correct: 1,
+        explanation: "The Kill Switch is the emergency stop. The other mechanisms constrain behavior proactively; the Kill Switch halts an agent immediately when needed."
+      },
+      {
+        question: "When should you set up least-privilege access for an agent?",
+        options: [
+          "After deployment, once you observe what data it actually needs",
+          "Before building, treating governance as the frame you build inside",
+          "Only if the AI Control Tower flags the agent as over-permissioned",
+          "Never; agents inherit safe defaults so setup is unnecessary"
+        ],
+        correct: 1,
+        explanation: "Set least-privilege access before building. Governance isn't a final step — it's the frame you build inside from the start, since an agent is only as powerful as the identity and tools you grant it."
+      }
+    ];
+    initQuiz('quiz6', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0006";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

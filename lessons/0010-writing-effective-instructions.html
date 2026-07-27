@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 10: Writing Effective Instructions</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 10: Writing Effective Instructions</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Lesson 9
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Write agent instructions that are assertive, unambiguous, and tool-aware — the difference between an agent that reliably does its job and one that wanders.</p>
+  </div>
+
+  <h2>The Core Principle</h2>
+  <div class="key-concept">
+    <strong>"If you don't know what you want, the agent won't know what you want."</strong> Instructions must be assertive and unambiguous. Vague instructions produce vague, inconsistent behavior. <a href="https://www.servicenow.com/community/now-assist-articles/create-your-own-ai-agent-a-walkthrough-on-creating-an-ai-agent/ta-p/3208901" target="_blank">(ServiceNow walkthrough)</a>
+  </div>
+
+  <h2>Five Rules for Good Instructions</h2>
+
+  <h3>1. State exactly what you expect as output</h3>
+  <p>Don't say "help with incidents." Say "Return the incident number, priority, and assigned group as a short bulleted list."</p>
+
+  <h3>2. Tell the agent WHEN to use each tool</h3>
+  <p>Every time you add a tool, add a line to the instructions describing when to invoke it. An agent that doesn't know when to use a tool won't use it — or uses it at the wrong moment.</p>
+
+  <h3>3. Encode approval gates for risky actions</h3>
+  <p>For autonomous write tools, spell out the guardrail explicitly:</p>
+  <pre><code>NEVER modify or close a record without
+first getting explicit user approval.
+Always show the user what you plan to
+change and wait for a "yes".</code></pre>
+
+  <h3>4. State naming conventions and data boundaries</h3>
+  <p>Tell the agent which tables it may touch, which it must never touch, and any naming rules it should follow. Boundaries prevent surprises.</p>
+
+  <h3>5. Keep it to one capability</h3>
+  <p>Instructions for a focused agent are short and clear. If your instructions are sprawling across many unrelated jobs, split the agent.</p>
+
+  <h2>Before &amp; After</h2>
+  <div class="warning">
+    <strong>❌ Weak:</strong> "You help users with their tickets and do stuff with incidents and other things they need."
+  </div>
+  <div class="success">
+    <strong>✓ Strong:</strong> "You are an incident triage assistant. When a user reports an issue: (1) look up their open incidents using the lookup tool; (2) if none match, create one with the create tool, setting category from their description; (3) always confirm the details with the user before creating. Return the new incident number. Never modify existing incidents without approval."
+  </div>
+
+  <div class="note">
+    <strong>Remember the ReAct loop:</strong> The agent reasons in Thought → Action → Observation cycles (Lesson 15). Good instructions guide each Thought toward the right Action. Think of instructions as coaching the agent's thought process.
+  </div>
+
+  <div class="note">
+    <strong>Official guidance:</strong> ServiceNow publishes dedicated pages titled <em>"Writing effectively for agentic AI"</em> and <em>"AI agents best practices"</em> in the Zurich docs. Consult them as your instruction-writing reference.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz10" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/now-assist-articles/create-your-own-ai-agent-a-walkthrough-on-creating-an-ai-agent/ta-p/3208901" class="resource-link" target="_blank">📚 Create Your Own AI Agent — Walkthrough</a>
+
+  <div class="teacher-note">
+    <strong>💡 Draft your instructions</strong> for an agent you have in mind and paste them here. I'll rewrite them together with you, applying these five rules.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What is the core principle of writing agent instructions?",
+        options: [
+          "Keep them as short as possible so the LLM reads them quickly",
+          "Be assertive and unambiguous; state exactly what you want",
+          "Use only bullet points because prose confuses the reasoning engine",
+          "Leave room for interpretation so the agent can be more creative"
+        ],
+        correct: 1,
+        explanation: "'If you don't know what you want, the agent won't know what you want.' Instructions must be assertive and unambiguous — vagueness produces inconsistent behavior."
+      },
+      {
+        question: "What should you do every time you add a new tool to an agent?",
+        options: [
+          "Delete the previous tool so the agent never has more than one",
+          "Add an instruction line telling the agent when to use that tool",
+          "Switch the agent's execution mode from autonomous to supervised",
+          "Rewrite the agentRole field to describe the new tool's mechanics"
+        ],
+        correct: 1,
+        explanation: "Adding a tool means updating instructions to tell the agent WHEN to use it. Otherwise the agent may ignore the tool or invoke it at the wrong time."
+      },
+      {
+        question: "How should you handle a risky autonomous write action in instructions?",
+        options: [
+          "Trust the agent's judgment and leave the behavior unspecified",
+          "Encode an explicit approval gate, e.g. never modify without approval",
+          "Remove the tool entirely since writes can never be made safe",
+          "Set the output to verbose so the user can read what happened after"
+        ],
+        correct: 1,
+        explanation: "Spell out approval gates explicitly (e.g. 'NEVER modify without user approval; show the change and wait for yes'). Pair this with supervised execution mode for defense in depth."
+      },
+      {
+        question: "Which instruction is strongest?",
+        options: [
+          "Help users with tickets and do other things they might need done",
+          "Look up open incidents; confirm details before creating; return the number",
+          "Be helpful and friendly whenever a user comes to you with a problem",
+          "Handle incidents, problems, changes, requests, and anything else too"
+        ],
+        correct: 1,
+        explanation: "The strong instruction states concrete steps, an approval point ('confirm before creating'), and an exact expected output ('return the number'). The others are vague or unfocused."
+      }
+    ];
+    initQuiz('quiz10', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0010";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

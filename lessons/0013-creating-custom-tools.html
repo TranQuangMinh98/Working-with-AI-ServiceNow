@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 13: Creating Custom Tools</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 13: Creating Custom Tools</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 18 minutes | <strong>Level:</strong> Beginner-Intermediate | <strong>Prerequisites:</strong> Lesson 12
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Build two custom tools by hand: a no-code <strong>Record operation</strong> tool and a <strong>Script</strong> tool. Learn the input/output rules that make tools actually work.</p>
+  </div>
+
+  <h2>Custom Tool #1: A Record Operation (No Code)</h2>
+  <p>Record operations let an agent do CRUD — Create, Read (lookup), Update, Delete — without any code. You configure them with a table and a condition builder.</p>
+
+  <p><strong>Example: a "Look up open incidents for a caller" tool.</strong></p>
+  <ol>
+    <li>Choose operation: <strong>Lookup</strong></li>
+    <li>Choose table: <code>incident</code></li>
+    <li>Build the condition: <code>Active = true</code> AND <code>Caller = {{caller_id}}</code></li>
+    <li>Write a clear description: <em>"Looks up all active incidents for a given caller. Use when the user asks about their open tickets."</em></li>
+  </ol>
+
+  <div class="note">
+    <strong>Referencing inputs:</strong> Use the <code>{{...}}</code> syntax to drop user-provided values into conditions — e.g. <code>{{caller_id}}</code>. The agent fills these in from the conversation.
+  </div>
+
+  <div class="warning">
+    <strong>⚠ Record operation limits (know these):</strong>
+    <ul style="margin-top:0.5rem;">
+      <li>Output is <strong>String only</strong> — no rich record cards.</li>
+      <li>Reference fields aren't supported directly.</li>
+      <li>Journal fields (<code>work_notes</code>, <code>comments</code>) <strong>can't</strong> be written by CRUD — you need a Script tool for those.</li>
+    </ul>
+  </div>
+
+  <h2>Custom Tool #2: A Script Tool</h2>
+  <p>When CRUD isn't enough, a Script tool runs custom JavaScript. Two rules make or break a script tool:</p>
+
+  <ul>
+    <li>Read inputs via the <code>inputs.&lt;name&gt;</code> object.</li>
+    <li>Return data by populating an <code>outputs</code> object — that's how downstream steps receive your data.</li>
+  </ul>
+
+  <pre><code>// Script tool: add a work note to an incident
+// input: incident_number (String), note_text (String)
+
+(function execute(inputs, outputs) {
+    var gr = new GlideRecordSecure('incident');   // use GlideRecordSecure, not GlideRecord
+    if (gr.get('number', inputs.incident_number)) {
+        gr.work_notes = inputs.note_text;          // journal field — needs a script
+        gr.update();
+        outputs.result = 'Work note added to ' + inputs.incident_number;
+    } else {
+        outputs.result = 'Incident not found: ' + inputs.incident_number;
+    }
+})(inputs, outputs);</code></pre>
+
+  <div class="key-concept">
+    <strong>Security rule from the SDK:</strong> Always use <code>GlideRecordSecure</code> (not plain <code>GlideRecord</code>) in agent script tools. It enforces the user's ACLs, so the agent can't read or write data the user isn't allowed to touch. <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" target="_blank">(Fluent SDK)</a>
+  </div>
+
+  <h2>Subflow &amp; Flow Action Tools</h2>
+  <p>You can also wrap logic built in Workflow Studio as a tool. The one rule to remember: <strong>inputs and outputs must be String type</strong>, or the orchestrator can't pass data in and out. We'll use these in Unit 6.</p>
+
+  <div class="success">
+    <strong>Every time you add a tool, update the agent's instructions</strong> to tell it <em>when</em> to use the new tool. A tool the agent doesn't know when to call is a tool it won't use.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz13" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" class="resource-link" target="_blank">📚 Fluent SDK — Building AI Agents Guide</a>
+
+  <div class="teacher-note">
+    <strong>💡 Have a task in mind?</strong> Tell me what you want an agent to do, and I'll help you decide whether it needs a Record operation, a Script, or a Subflow.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "In a Script tool, how do you pass data to downstream steps?",
+        options: [
+          "Return a plain string value directly from the execute function",
+          "Populate the outputs object with the data you want to pass on",
+          "Write the values into the inputs object so they persist onward",
+          "Call gs.print() to emit the data into the conversation history"
+        ],
+        correct: 1,
+        explanation: "Script tools read from the inputs object and must populate the outputs object to pass data downstream. Data left only in local variables is lost."
+      },
+      {
+        question: "Why use GlideRecordSecure instead of GlideRecord in an agent script?",
+        options: [
+          "It runs faster because it caches every query result automatically",
+          "It enforces the user's ACLs so the agent respects access controls",
+          "It is the only class that can ever write to any journal type field",
+          "It automatically converts all reference fields into display strings"
+        ],
+        correct: 1,
+        explanation: "GlideRecordSecure enforces access control lists, ensuring the agent can only read/write data the user is permitted to access — a core security best practice."
+      },
+      {
+        question: "You need an agent to add a comment to an incident. Which approach works?",
+        options: [
+          "A Record operation update, since CRUD handles all fields equally",
+          "A Script tool, because journal fields require scripting to write to",
+          "A Search retrieval tool, since comments are indexed for retrieval",
+          "It is impossible for an agent to ever write to a comments field"
+        ],
+        correct: 1,
+        explanation: "Journal fields (comments, work_notes) can't be written via a CRUD Record operation — you must use a Script tool. Record operations handle standard fields only."
+      },
+      {
+        question: "What is the rule for Subflow and Flow action tool inputs/outputs?",
+        options: [
+          "They must all be of String type or the orchestrator cannot use them",
+          "They can be any data type as long as they are documented clearly",
+          "They must be reference fields pointing back to the source record",
+          "They are optional and the flow will infer them from conversation"
+        ],
+        correct: 0,
+        explanation: "Subflow and Flow action tool inputs and outputs must be String type, or the AI Agent orchestrator can't pass data to and from the flow."
+      }
+    ];
+    initQuiz('quiz13', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0013";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

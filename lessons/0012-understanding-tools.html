@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 12: Understanding Tools</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 12: Understanding Tools</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15 minutes | <strong>Level:</strong> Beginner | <strong>Prerequisites:</strong> Unit 4
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Understand what <strong>Tools</strong> are, the main tool types available, and the two settings that matter most: <strong>execution mode</strong> (supervised vs. autonomous) and the all-important <strong>name + description</strong>.</p>
+  </div>
+
+  <h2>Tools Are How Agents Take Action</h2>
+  <p>An agent's reasoning is only useful if it can <em>do</em> something. Tools are the hands of the agent — each one is a discrete capability the agent can invoke: read a record, run a script, launch a flow, or call a generative skill.</p>
+
+  <div class="key-concept">
+    <strong>The golden rule of tools:</strong> The agent's orchestrator reads each tool's <strong>name and description</strong> to decide whether and how to call it. A vague description = a tool the agent uses at the wrong time, or not at all. Write descriptions as if instructing a new employee.
+  </div>
+
+  <h2>The Main Tool Types</h2>
+  <p>ServiceNow ships many tool types. As a beginner, focus on these four — they cover the vast majority of use cases:</p>
+
+  <table style="width:100%; border-collapse: collapse; margin: 1.5rem 0;">
+    <thead>
+      <tr style="background: var(--code-bg);">
+        <th style="text-align:left; padding:0.75rem; border:1px solid var(--border-color);">Tool Type</th>
+        <th style="text-align:left; padding:0.75rem; border:1px solid var(--border-color);">What it does</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:0.75rem; border:1px solid var(--border-color);"><strong>Record operation</strong></td>
+        <td style="padding:0.75rem; border:1px solid var(--border-color);">Create, look up, update, or delete records (CRUD) on a table using a condition builder. No code required.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.75rem; border:1px solid var(--border-color);"><strong>Script</strong></td>
+        <td style="padding:0.75rem; border:1px solid var(--border-color);">Custom JavaScript for logic CRUD can't handle (e.g., writing to work notes). Uses <code>GlideRecordSecure</code>.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.75rem; border:1px solid var(--border-color);"><strong>Subflow / Flow action</strong></td>
+        <td style="padding:0.75rem; border:1px solid var(--border-color);">Reuse logic built in Workflow Studio. Inputs and outputs <em>must be String</em>.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.75rem; border:1px solid var(--border-color);"><strong>Now Assist skill</strong></td>
+        <td style="padding:0.75rem; border:1px solid var(--border-color);">A published generative skill built in NASK (Lesson 14).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:0.95rem; color:var(--text-secondary);">Other types you'll meet later: Search retrieval (RAG), Catalog item, Web search, Knowledge Graph, Conversational topic, Desktop action, and MCP. <a href="https://www.servicenow.com/community/now-assist-articles/ai-agent-tools-getting-the-most-out-of-your-agentic-workflows/ta-p/3227648" target="_blank">(ServiceNow — AI Agent Tools)</a></p>
+
+  <div class="note">
+    <strong>Tool selection priority</strong> (from the Fluent SDK): prefer out-of-box tools first, then reference-based, then CRUD, and reach for a <strong>Script tool only when nothing else fits</strong>. Simpler tools are easier to maintain and safer. <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" target="_blank">(Fluent SDK)</a>
+  </div>
+
+  <h2>Supervised vs. Autonomous</h2>
+  <p>Every tool has an <strong>execution mode</strong>, set <em>per tool</em>:</p>
+
+  <div class="diagram">
+    <div class="architecture-box" style="border-color: var(--warning-color);">
+      🙋 <strong>Supervised</strong><br><small>asks user before running</small><br><small>(SDK: <code>copilot</code>)</small>
+    </div>
+    <div class="architecture-box" style="border-color: var(--danger-color);">
+      🤖 <strong>Autonomous</strong><br><small>runs on its own</small><br><small>(SDK: <code>autopilot</code>)</small>
+    </div>
+  </div>
+
+  <div class="warning">
+    <strong>⚠ Safety principle:</strong> Make <em>read</em> operations (look-ups) autonomous — they're harmless. Make <em>write</em> operations (create/update/delete) supervised until you fully trust the agent. You can also encode approval gates in the agent's instructions: <em>"NEVER modify a record without user approval."</em>
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz12" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/now-assist-articles/ai-agent-tools-getting-the-most-out-of-your-agentic-workflows/ta-p/3227648" class="resource-link" target="_blank">📚 AI Agent Tools — Getting the Most Out of Your Agentic Workflows</a>
+
+  <div class="teacher-note">
+    <strong>💡 Want a concrete example?</strong> Ask me to walk through writing a good tool description for a specific task you have in mind.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "Why are a tool's name and description so important?",
+        options: [
+          "They determine the security ACL that governs the tool access",
+          "The orchestrator reads them to decide when and how to call it",
+          "They set whether the tool runs supervised or fully autonomously",
+          "They control which table the record operation will write data to"
+        ],
+        correct: 1,
+        explanation: "The reasoning engine relies on the name and description to decide whether a tool is relevant and how to use it. Vague descriptions cause poor tool selection."
+      },
+      {
+        question: "Which tool type should you reach for ONLY when nothing else fits?",
+        options: [
+          "Record operation, because CRUD is powerful and flexible enough",
+          "Script tool, since custom JavaScript is harder to maintain safely",
+          "Subflow tool, because it reuses existing Workflow Studio logic",
+          "Now Assist skill, since generative output is the most advanced"
+        ],
+        correct: 1,
+        explanation: "The SDK priority is out-of-box → reference → CRUD → Script last. Scripts are the most flexible but the hardest to maintain and secure, so use them only when simpler tools can't do the job."
+      },
+      {
+        question: "You build a tool that DELETES records. Which execution mode is safest?",
+        options: [
+          "Autonomous, so the agent can resolve issues without any delay",
+          "Supervised, so the agent asks the user to approve before running",
+          "Neither, because delete operations cannot be made into agent tools",
+          "Both at once, alternating between them on every other execution"
+        ],
+        correct: 1,
+        explanation: "Destructive write operations should be Supervised (copilot mode) so a human approves before execution. Reserve Autonomous for safe read/look-up operations."
+      },
+      {
+        question: "You need an agent to write to a record's work notes. Which tool fits?",
+        options: [
+          "Record operation (CRUD), which handles all field types directly",
+          "Script tool, because journal fields require scripting to write to",
+          "Web search tool, since it retrieves and posts external information",
+          "Subflow tool, because only flows can ever touch journal fields"
+        ],
+        correct: 1,
+        explanation: "Journal fields like work_notes and comments can't be written by a CRUD Record operation — they require a Script tool. This is a common real-world gotcha."
+      }
+    ];
+    initQuiz('quiz12', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0012";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>

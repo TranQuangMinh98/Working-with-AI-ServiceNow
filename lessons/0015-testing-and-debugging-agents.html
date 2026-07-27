@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 16: Testing & Debugging Agents</title>
+  <link rel="stylesheet" href="../assets/lesson-styles.css">
+  <link rel="stylesheet" href="../assets/nav-styles.css">
+</head>
+<body>
+  <div class="lesson-content">
+  <h1>Lesson 16: Testing &amp; Debugging Agents</h1>
+
+  <div class="lesson-meta">
+    <strong>Duration:</strong> 15 minutes | <strong>Level:</strong> Beginner-Intermediate | <strong>Prerequisites:</strong> Lesson 15
+  </div>
+
+  <div class="objective">
+    <h2>Learning Objective</h2>
+    <p>Learn how to test an agent in AI Agent Studio, read its <strong>chain of thought</strong> (the ReAct loop), and apply the golden testing method: <strong>test bare, then add tools one at a time</strong>.</p>
+  </div>
+
+  <h2>How an Agent "Thinks": The ReAct Loop</h2>
+  <p>To debug an agent, you first need to see how it reasons. ServiceNow agents follow a <strong>ReAct</strong> pattern — a repeating loop:</p>
+
+  <div class="diagram">
+    <div class="architecture-box" style="border-color:#9C27B0;">💭 <strong>Thought</strong><br><small>"What should I do?"</small></div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:var(--success-color);">⚙️ <strong>Action</strong><br><small>calls a tool</small></div>
+    <div class="architecture-arrow">→</div>
+    <div class="architecture-box" style="border-color:var(--primary-color);">👀 <strong>Observation</strong><br><small>reads the result</small></div>
+    <div class="architecture-arrow">↻ repeat</div>
+  </div>
+
+  <p>The agent loops through Thought → Action → Observation until it has met its goal. The test panel shows you every step of this loop — this is your primary debugging window.</p>
+
+  <h2>The Golden Testing Method</h2>
+  <div class="key-concept">
+    <strong>Test bare first, then add tools one at a time.</strong> Start with an agent that has <em>no tools</em> and confirm its basic reasoning is sound. Then add ONE tool, re-test, and confirm it's called correctly. Repeat. This isolates problems — when something breaks, you know exactly which addition caused it. <a href="https://www.servicenow.com/community/ceg-ai-coe-articles/how-to-build-a-simple-ai-agent/ta-p/3571607" target="_blank">(ServiceNow — Build a Simple AI Agent)</a>
+  </div>
+
+  <h2>Testing in AI Agent Studio</h2>
+  <p>Two testing tools exist for both agents and workflows:</p>
+  <ul>
+    <li><strong>Test execution manually</strong> — run the agent with sample input and watch the full chain of thought.</li>
+    <li><strong>Test user access</strong> — verify the agent behaves correctly under a specific user's permissions.</li>
+  </ul>
+
+  <div class="warning">
+    <strong>⚠ Agents are non-deterministic.</strong> The same prompt can produce different reasoning paths each run. <strong>Always test the same scenario several times</strong> — if it only works sometimes, your instructions or tool descriptions are too ambiguous. <a href="https://servicenow.github.io/sdk/guides/building-ai-agents-guide" target="_blank">(Fluent SDK)</a>
+  </div>
+
+  <h2>Common Problems &amp; Fixes</h2>
+  <table style="width:100%; border-collapse: collapse; margin: 1.5rem 0;">
+    <thead>
+      <tr style="background: var(--code-bg);">
+        <th style="text-align:left; padding:0.6rem; border:1px solid var(--border-color);">Symptom</th>
+        <th style="text-align:left; padding:0.6rem; border:1px solid var(--border-color);">Likely Cause &amp; Fix</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Agent ignores a tool it should use</td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Tool description too vague, or instructions don't say <em>when</em> to use it. Sharpen both.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Agent calls a tool at the wrong time</td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Overlapping tool descriptions. Make each tool's purpose distinct.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Tool runs but passes no data on</td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Script didn't populate <code>outputs</code>, or flow I/O isn't String type.</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Agent loops forever on one tool</td>
+        <td style="padding:0.6rem; border:1px solid var(--border-color);">Check the <code>sn_aia.continuous_tool_execution_limit</code> property.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="success">
+    <strong>Pro tip:</strong> Keep each agent to <strong>one capability</strong>, and if it needs more than about <strong>5 tools</strong>, split it into multiple agents inside an agentic workflow. Smaller agents are far easier to test and debug.
+  </div>
+
+  <div class="practice-section">
+    <h2>🎯 Check Your Understanding</h2>
+    <div id="quiz15" class="quiz"></div>
+  </div>
+
+  <h2>Primary Resource</h2>
+  <a href="https://www.servicenow.com/community/ceg-ai-coe-articles/how-to-build-a-simple-ai-agent/ta-p/3571607" class="resource-link" target="_blank">📚 How to Build a Simple AI Agent</a>
+
+  <div class="teacher-note">
+    <strong>💡 Stuck on a real bug?</strong> Describe what your agent did versus what you expected, and I'll help you trace it through the ReAct loop.
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What are the three repeating steps of the ReAct loop?",
+        options: [
+          "Request, Analyze, Complete — the agent's full lifecycle each time",
+          "Thought, Action, Observation — reason, call a tool, read result",
+          "Read, Approve, Commit — the standard supervised execution cycle",
+          "Trigger, Route, Deploy — how a workflow dispatches to its agents"
+        ],
+        correct: 1,
+        explanation: "The ReAct loop is Thought → Action → Observation, repeated until the goal is met. The test panel shows each step, making it your primary debugging view."
+      },
+      {
+        question: "What is the golden method for testing a new agent?",
+        options: [
+          "Add every tool at once, then test the whole thing a single time",
+          "Test it bare with no tools first, then add tools one at a time",
+          "Deploy to production immediately and monitor real user sessions",
+          "Skip manual testing and rely only on the Test user access check"
+        ],
+        correct: 1,
+        explanation: "Test the agent bare first to confirm basic reasoning, then add one tool at a time, re-testing after each. This isolates exactly which change causes any problem."
+      },
+      {
+        question: "Your agent works on some runs but not others. What does this signal?",
+        options: [
+          "The instance is under load and needs more processing capacity",
+          "Ambiguous instructions or tool descriptions; agents are non-deterministic",
+          "A licensing problem that intermittently disables the agent's tools",
+          "Nothing — agents are expected to fail randomly and it is acceptable"
+        ],
+        correct: 1,
+        explanation: "Agents are non-deterministic, so you must test the same scenario multiple times. Inconsistent results mean your instructions or tool descriptions are too ambiguous and need sharpening."
+      },
+      {
+        question: "An agent needs 8 different tools. What's the recommended approach?",
+        options: [
+          "Keep all 8 on one agent so it has full context in one place",
+          "Split into multiple agents in a workflow; keep each to one capability",
+          "Remove tools until only 5 remain and drop the other 3 features",
+          "Convert the extra tools into a single large script tool instead"
+        ],
+        correct: 1,
+        explanation: "Best practice is one capability per agent, splitting when tools exceed ~5. Smaller focused agents inside an agentic workflow are easier to test, debug, and maintain."
+      }
+    ];
+    initQuiz('quiz15', questions);
+  </script>
+
+  </div><!-- /.lesson-content -->
+
+  <script src="../assets/course-data.js"></script>
+  <script>const CURRENT_LESSON_ID = "0015";</script>
+  <script src="../assets/nav.js"></script>
+</body>
+</html>
